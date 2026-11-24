@@ -1,0 +1,74 @@
+{
+  "name": "Project Genesis",
+  "globIgnorePaths": ["**/package.json", "**/tsconfig.json"],
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$className": "Workspace",
+      "$properties": {
+        "StreamingEnabled": true,
+        "StreamingMinRadius": 128,
+        "StreamingTargetRadius": 640
+      },
+      "GenesisInstallation": {
+        "$path": "assets/installation.model.json"
+      }
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "Ambient": [0.5, 0.5, 0.52],
+        "OutdoorAmbient": [0.56, 0.58, 0.62],
+        "Brightness": 2.5,
+        "ClockTime": 14,
+        "EnvironmentDiffuseScale": 1,
+        "EnvironmentSpecularScale": 1,
+        "GlobalShadows": true
+      },
+      "Atmosphere": {
+        "$className": "Atmosphere",
+        "$properties": {
+          "Density": 0.36,
+          "Offset": 0.1,
+          "Haze": 1.4,
+          "Color": [0.78, 0.83, 0.88],
+          "Decay": [0.55, 0.62, 0.7]
+        }
+      }
+    },
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "rbxts_include": {
+        "$path": "include",
+        "node_modules": {
+          "$className": "Folder",
+          "@rbxts": {
+            "$path": "node_modules/@rbxts"
+          }
+        }
+      },
+      "GenesisShared": {
+        "$path": "out/shared"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "GenesisServer": {
+        "$path": "out/server"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "$properties": {
+        "CameraMinZoomDistance": 4,
+        "CameraMaxZoomDistance": 12
+      },
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "GenesisClient": {
+          "$path": "out/client"
+        }
+      }
+    }
+  }
+}

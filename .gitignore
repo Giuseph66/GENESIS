@@ -1,0 +1,9 @@
+/node_modules/
+/include/
+/out/
+/build/
+/.tools/
+
+/sourcemap.json
+*.rbxl.lock
+*.rbxlx.lock
