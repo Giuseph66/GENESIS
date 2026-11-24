@@ -2,7 +2,7 @@
 
 ## Grid, instalação e custos
 
-Use coordenadas inteiras relativas à origem do terreno e rotações em passos de 90° no eixo vertical. Cada máquina declara o volume ocupado em células, a altura e as portas em coordenadas locais. O MVP usa o piso industrial e volumes tridimensionais, com empilhamento e esteiras verticais reservados a uma expansão. Proposta inicial de escala: célula de 4 studs, sujeita a teste de leitura e alcance em mobile.
+Use coordenadas inteiras relativas à origem do terreno e rotações em passos de 90° no eixo vertical. Cada máquina declara o volume ocupado em células, a altura e as portas em coordenadas locais. O MVP usa o piso industrial e volumes tridimensionais, com empilhamento e esteiras verticais reservados a uma expansão. Escala em uso: célula de 4 studs e área de ±80 studs no platô do posto, sujeitas a teste de leitura e alcance em mobile.
 
 1. O cliente aponta uma célula e desenha a prévia a partir do catálogo compartilhado. Forma e texto indicam bloqueios previstos.
 2. O servidor confere mundo, membro, distância, área de construção, piso, ocupação, volume girado, desbloqueio, custo e limite por mundo.
@@ -36,7 +36,7 @@ Referência de consumo inicial: mineradora 5, fornalha 10 e montadora 10 unidade
 | Construir o armazém | 2 |
 | Construir um segmento de esteira | 1 |
 
-Disponibilize inicialmente 30 minérios e 6 carvões entre coleta e reservas da instalação. Com seis segmentos, a linha usa 26 minérios e deixa quatro para experimentar. Antes de ajustar custos, monte a planta e confirme que a rota de referência cabe nesses seis segmentos. Carvão abastece o gerador durante o tutorial e a produção das pesquisas. Ferro e carvão continuam disponíveis para coleta manual quando a linha estiver parada.
+Disponibilize inicialmente 30 minérios e 6 carvões entre coleta e reservas da instalação. Com seis segmentos, a linha usa 26 minérios e deixa quatro para experimentar. Antes de ajustar custos, monte a planta e confirme que a rota de referência cabe nesses seis segmentos. Carvão abastece o gerador durante o tutorial e a produção das pesquisas. Ferro e carvão continuam disponíveis para coleta manual: os depósitos do posto não esgotam e rendem 5 ferros ou 1 carvão por golpe, e as jazidas do mundo se recompõem em 120 s.
 
 ## Catálogos e estado
 

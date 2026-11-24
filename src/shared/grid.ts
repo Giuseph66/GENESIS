@@ -1,10 +1,10 @@
 import type { MachineType } from "./catalog";
 
 export const CELL_SIZE = 4;
-/** Células construíveis vão de -HALF_EXTENT a HALF_EXTENT - 1, sobre a clareira plana. */
-export const HALF_EXTENT = 48;
-/** Distância máxima, em studs, entre o jogador e o centro da construção. */
-export const BUILD_REACH = 60;
+/** Células construíveis vão de -HALF_EXTENT a HALF_EXTENT - 1, sobre o platô do posto. */
+export const HALF_EXTENT = 20;
+/** A construção usa câmera de drone: basta o jogador estar no platô do posto. */
+export const BUILD_REACH = 260;
 
 export interface Placement {
 	/** Célula de menor X e Z ocupada. */
@@ -28,6 +28,29 @@ const RESERVED: ReadonlyArray<CellRect> = [
 	{ minX: -5, maxX: -3, minZ: -4, maxZ: -2 }, // depósito de ferro
 	{ minX: 2, maxX: 4, minZ: -4, maxZ: -2 }, // depósito de carvão
 	{ minX: -2, maxX: 1, minZ: -9, maxZ: -6 }, // abrigo
+	{ minX: -8, maxX: -5, minZ: 2, maxZ: 6 }, // contêineres e barris
+	{ minX: 5, maxX: 7, minZ: -7, maxZ: -5 }, // contêiner e barril
+	{ minX: -8, maxX: -3, minZ: -7, maxZ: -7 }, // tubulação oeste
+	{ minX: 2, maxX: 7, minZ: -7, maxZ: -7 }, // tubulação leste
+	{ minX: 7, maxX: 7, minZ: 6, maxZ: 6 }, // poste
+	{ minX: -3, maxX: -3, minZ: -8, maxZ: -8 }, // antena
+];
+
+/** Veios de ferro. As peças visíveis ficam em assets/installation.model.json. */
+const VEINS: ReadonlyArray<CellRect> = [
+	{ minX: 8, maxX: 13, minZ: -4, maxZ: 1 },
+	{ minX: -14, maxX: -9, minZ: -4, maxZ: 1 },
+];
+
+/** Gerador fixo, já presente no posto. */
+export const EMERGENCY_GENERATOR: Placement = { cx: 5, cz: 2, rotation: 0 };
+
+/** Direção da frente de uma construção, em células, para cada rotação. */
+const DIRECTIONS: ReadonlyArray<{ readonly x: number; readonly z: number }> = [
+	{ x: 0, z: -1 },
+	{ x: 1, z: 0 },
+	{ x: 0, z: 1 },
+	{ x: -1, z: 0 },
 ];
 
 export function footprint(machine: MachineType, rotation: number): LuaTuple<[number, number]> {
@@ -83,4 +106,35 @@ export function placementAt(machine: MachineType, point: Vector3, rotation: numb
 		cz: math.round(point.Z / CELL_SIZE - depth / 2),
 		rotation,
 	};
+}
+
+export function isOnVein(machine: MachineType, placement: Placement): boolean {
+	const [width, depth] = footprint(machine, placement.rotation);
+	return VEINS.some(
+		(rect) =>
+			placement.cx >= rect.minX &&
+			placement.cx + width - 1 <= rect.maxX &&
+			placement.cz >= rect.minZ &&
+			placement.cz + depth - 1 <= rect.maxZ,
+	);
+}
+
+/** Células logo à frente da construção, em ordem estável. */
+export function frontCells(machine: MachineType, placement: Placement): Array<string> {
+	const [width, depth] = footprint(machine, placement.rotation);
+	const direction = DIRECTIONS[placement.rotation];
+	const cells = new Array<string>();
+	if (direction.x === 0) {
+		const z = direction.z < 0 ? placement.cz - 1 : placement.cz + depth;
+		for (let x = 0; x < width; x++) cells.push(cellKey(placement.cx + x, z));
+	} else {
+		const x = direction.x < 0 ? placement.cx - 1 : placement.cx + width;
+		for (let z = 0; z < depth; z++) cells.push(cellKey(x, placement.cz + z));
+	}
+	return cells;
+}
+
+/** Orientação da construção no mundo, com a frente em -Z local. */
+export function placementCFrame(machine: MachineType, placement: Placement): CFrame {
+	return new CFrame(placementCenter(machine, placement)).mul(CFrame.Angles(0, (-placement.rotation * math.pi) / 2, 0));
 }

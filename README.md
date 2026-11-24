@@ -2,7 +2,7 @@
 
 Jogo original para Roblox que conecta construção industrial, expedições roguelite e uma história de ficção científica. Você desperta numa instalação subterrânea, restaura a infraestrutura com a ajuda de ECHO e usa a fábrica para alcançar setores que guardam evidências sobre o projeto GENESIS.
 
-**Estado atual:** Fase 0 concluída. Compilação, sincronização e execução do cliente e do servidor validadas no Roblox Studio.
+**Estado atual:** Capítulo 1 jogável de ponta a ponta em mundo solo, verificado no Studio. Faltam playtest humano, DataStore real, mobile e coop.
 
 ## Documentação
 
@@ -34,6 +34,7 @@ Use Node.js e npm para instalar os pacotes do lockfile. Extraia a CLI para `.too
 ```sh
 npm ci
 npm run build
+npm test
 mkdir -p build
 ./.tools/rojo build --output build/GENESIS.rbxlx
 ```
@@ -43,4 +44,3 @@ O place do projeto é sempre `build/GENESIS.rbxlx`. Regenere esse arquivo em tod
 Abra `build/GENESIS.rbxlx` no Roblox Studio e inicie **Test**. A janela **Saída** deve mostrar mensagens de inicialização para cliente e servidor. Para sincronizar alterações, rode `npm run dev` e `./.tools/rojo serve` em terminais separados e conecte o plugin à sessão local.
 
 O [Prompt.txt](docs/Prompt.txt) contém o briefing original. Os documentos detalham o trabalho e identificam os parâmetros de design que ainda precisam de playtest. Publicação pública e compras dependem de autorização explícita do proprietário.
-# GENESIS

@@ -14,5 +14,6 @@ export function getInstallation() {
 		terminal: findPart(world, "TerminalEcho"),
 		iron: findPart(world, "DepositoFerro"),
 		coal: findPart(world, "DepositoCarvao"),
+		maintenanceDoor: findPart(world, "Porta de manutenção"),
 	};
 }

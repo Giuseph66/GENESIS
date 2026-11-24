@@ -11,6 +11,8 @@
 
 Use **Test** para o caminho solo e **Server & Clients** para concorrência e permissões quando o coop entrar. Use o **Device Simulator** para revisar layout e ações de toque. Registre desempenho em hardware real. Se houver integração com Studio disponível, ela pode automatizar a coleta de logs e a reprodução de cenários. [Modos de teste do Studio](https://create.roblox.com/docs/studio/testing-modes) · [Testes em hardware](https://create.roblox.com/docs/performance-optimization/test-on-hardware)
 
+`npm test` roda os casos de domínio em Node, com o mínimo de APIs simulado em `tests/runtime.cjs`. Isso não cobre o compilador nem o motor: confirme no Studio.
+
 ## Casos de domínio e integração
 
 | ID | Situação | Resultado esperado |

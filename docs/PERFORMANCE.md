@@ -27,3 +27,15 @@ Protocolo inicial: 30 s de aquecimento e três amostras de 120 s por cenário. R
 Delimite etapas com `debug.profilebegin()` e `debug.profileend()`. Use MicroProfiler e Developer Console para correlacionar tempo de scripts, memória, renderização e rede. [Ferramentas de diagnóstico](https://create.roblox.com/docs/performance-optimization/identify) · [Roteiro do MicroProfiler](https://create.roblox.com/docs/performance-optimization/microprofiler/use-microprofiler)
 
 Os alvos acima são propostas de validação. Defina o limite inicial de construção a partir do maior cenário que sustenta as metas no hardware alvo, com margem para o restante do jogo. Guarde um perfil de referência para comparar regressões.
+
+## Medições
+
+Studio 0.748 em Play local no Linux com Vinegar, um jogador, 2026-11-23. São referência de desenvolvimento e não substituem a medição em mobile.
+
+| Cenário | Resultado |
+| --- | --- |
+| Passo da simulação isolada, 50 / 100 / 250 / 500 máquinas | p95 de 0,03 / 0,07 / 0,14 / 0,35 ms |
+| Geração do mundo, 1.500 a 42.000 studs da origem | Passo médio de 16,8 ms, máximo de 66 ms, 2 de cerca de 535 acima de 34 ms |
+| Mundo carregado ao redor do posto | 62 blocos, 3.221 peças e 162 jazidas |
+
+Falta medir replicação dos atributos das máquinas, memória após expedições e quadro no cliente.

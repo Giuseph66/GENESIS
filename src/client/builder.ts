@@ -1,32 +1,32 @@
-import { COST_RESOURCE, findMachine, MACHINES, MachineType } from "../shared/catalog";
+import { BUILDABLE, COST_ITEM, MachineType } from "../shared/catalog";
+import { IN_ENCOUNTER } from "../shared/combat";
 import {
 	BUILD_REACH,
-	CELL_SIZE,
 	isInsideGrid,
+	isOnVein,
 	isReserved,
 	occupiedCells,
 	Placement,
 	placementAt,
 	placementCenter,
 } from "../shared/grid";
-import {
-	Reason,
-	STRUCTURE_CX,
-	STRUCTURE_CZ,
-	STRUCTURE_ID,
-	STRUCTURE_MACHINE,
-	STRUCTURE_ROTATION,
-	STRUCTURES_FOLDER,
-} from "../shared/protocol";
-import { getState, onState, sendBuild, sendRemove } from "./connection";
+import { DIRECTION_NAMES, hasOutput } from "../shared/ports";
+import { Reason, STRUCTURE_OWNER } from "../shared/protocol";
+import { aimPoint } from "./camera";
+import { getState, onState, send } from "./connection";
+import { enterDrone, leaveDrone, zoomDrone } from "./drone";
+import { createGrid, Ghost } from "./ghost";
 import { reasonText } from "./hud";
-import { button, label, panel, scaleToFit, theme } from "./ui";
+import { mountInspector } from "./inspector";
+import { playSound } from "./sounds";
+import { button, keyBadge, keyButton, label, panel, scaleToFit, setSelected, swatch, theme } from "./ui";
+import { floorPoint, numberAttribute, SeenStructure, seenStructures, structureAt } from "./world";
 
 const players = game.GetService("Players");
-const workspace = game.GetService("Workspace");
 const runService = game.GetService("RunService");
 const input = game.GetService("UserInputService");
 
+const player = players.LocalPlayer;
 const DIGITS: ReadonlyArray<Enum.KeyCode> = [
 	Enum.KeyCode.One,
 	Enum.KeyCode.Two,
@@ -35,88 +35,94 @@ const DIGITS: ReadonlyArray<Enum.KeyCode> = [
 	Enum.KeyCode.Five,
 	Enum.KeyCode.Six,
 ];
+const MAX_LINE = 24;
+/** Um pouco abaixo do limite de comandos do servidor. */
+const SEND_INTERVAL = 0.13;
+const ZOOM_STEP = 0.12;
+/** Longe disto do posto, o drone não alcança o platô. */
+const BASE_DISTANCE = 150;
 
-type Mode = { kind: "idle" } | { kind: "build"; machine: MachineType } | { kind: "remove" };
+type Mode =
+	/** A pé, fora da construção. */
+	| { kind: "off" }
+	/** No drone, sem nada escolhido. */
+	| { kind: "idle" }
+	| { kind: "build"; machine: MachineType }
+	| { kind: "pick"; action: "move" | "remove" }
+	| { kind: "move"; structure: SeenStructure };
 
-function attribute(model: Instance, name: string): number | undefined {
-	const value = model.GetAttribute(name);
-	return typeIs(value, "number") ? value : undefined;
+interface Plan {
+	readonly placement: Placement;
+	readonly reason: Reason;
 }
 
 /** Previsão local. O servidor confere tudo de novo. */
-function predict(machine: MachineType, placement: Placement): Reason {
+function predict(machine: MachineType, placement: Placement, taken: ReadonlySet<string>, iron: number, moving: boolean): Reason {
 	const state = getState();
-	if (!state || !state.echoOnline) return "ECHO_OFFLINE";
+	if (!state || (moving ? !state.grants.remove : !state.grants.build)) return "NOT_AUTHORIZED";
 	if (!isInsideGrid(machine, placement)) return "OUT_OF_BOUNDS";
 	if (isReserved(machine, placement)) return "RESERVED_AREA";
+	if (occupiedCells(machine, placement).some((cell) => taken.has(cell))) return "CELL_OCCUPIED";
+	if (machine.needsVein && !isOnVein(machine, placement)) return "NO_VEIN";
+	const root = player.Character?.FindFirstChild("HumanoidRootPart");
+	if (!root?.IsA("BasePart") || root.Position.sub(placementCenter(machine, placement)).Magnitude > BUILD_REACH) return "TOO_FAR";
+	return !moving && iron < machine.cost ? "INSUFFICIENT_ITEMS" : "OK";
+}
 
-	const wanted = new Set(occupiedCells(machine, placement));
-	for (const model of workspace.FindFirstChild(STRUCTURES_FOLDER)?.GetChildren() ?? []) {
-		const other = findMachine(model.GetAttribute(STRUCTURE_MACHINE));
-		const cx = attribute(model, STRUCTURE_CX);
-		const cz = attribute(model, STRUCTURE_CZ);
-		const rotation = attribute(model, STRUCTURE_ROTATION);
-		if (!other || cx === undefined || cz === undefined || rotation === undefined) continue;
-		if (occupiedCells(other, { cx, cz, rotation }).some((cell) => wanted.has(cell))) return "CELL_OCCUPIED";
+/** Caminho em L entre duas células. Cada esteira aponta para a seguinte. */
+function beltLine(from: Placement, to: Placement, rotation: number): Array<Placement> {
+	const cells = [{ cx: from.cx, cz: from.cz }];
+	const spanX = to.cx - from.cx;
+	const spanZ = to.cz - from.cz;
+	const walk = (count: number, stepX: number, stepZ: number) => {
+		for (let i = 0; i < count && cells.size() < MAX_LINE; i++) {
+			const last = cells[cells.size() - 1];
+			cells.push({ cx: last.cx + stepX, cz: last.cz + stepZ });
+		}
+	};
+	const alongX = () => walk(math.abs(spanX), math.sign(spanX), 0);
+	const alongZ = () => walk(math.abs(spanZ), 0, math.sign(spanZ));
+	if (math.abs(spanX) >= math.abs(spanZ)) {
+		alongX();
+		alongZ();
+	} else {
+		alongZ();
+		alongX();
 	}
-
-	const root = players.LocalPlayer.Character?.FindFirstChild("HumanoidRootPart");
-	if (!root?.IsA("BasePart") || root.Position.sub(placementCenter(machine, placement)).Magnitude > BUILD_REACH) {
-		return "TOO_FAR";
-	}
-	return state.inventory[COST_RESOURCE] < machine.cost ? "INSUFFICIENT_ITEMS" : "OK";
+	let facing = rotation;
+	return cells.map((cell, index) => {
+		const following = cells[index + 1];
+		if (following) {
+			const stepX = following.cx - cell.cx;
+			const stepZ = following.cz - cell.cz;
+			facing = stepX > 0 ? 1 : stepX < 0 ? 3 : stepZ > 0 ? 2 : 0;
+		}
+		return { cx: cell.cx, cz: cell.cz, rotation: facing };
+	});
 }
 
-/** Ponto do piso sob a tela. O piso da área construível fica em Y = 0. */
-function floorPoint(screen: Vector2): Vector3 | undefined {
-	const ray = workspace.CurrentCamera?.ViewportPointToRay(screen.X, screen.Y);
-	if (!ray || ray.Direction.Y >= -0.01) return undefined;
-	return ray.Origin.add(ray.Direction.mul(-ray.Origin.Y / ray.Direction.Y));
-}
-
-function structureAt(screen: Vector2): Model | undefined {
-	const ray = workspace.CurrentCamera?.ViewportPointToRay(screen.X, screen.Y);
-	const folder = workspace.FindFirstChild(STRUCTURES_FOLDER);
-	if (!ray || !folder) return undefined;
-	const params = new RaycastParams();
-	params.FilterType = Enum.RaycastFilterType.Include;
-	params.FilterDescendantsInstances = [folder];
-	const model = workspace.Raycast(ray.Origin, ray.Direction.mul(300), params)?.Instance.FindFirstAncestorOfClass("Model");
-	return model && attribute(model, STRUCTURE_ID) !== undefined ? model : undefined;
-}
-
-export function mountBuilder(gui: ScreenGui) {
-	let mode: Mode = { kind: "idle" };
+export function mountBuilder(gui: ScreenGui, showToast: (text: string) => void) {
+	const inspector = mountInspector(gui);
+	const showGrid = createGrid();
+	const ghosts = new Array<Ghost>();
+	let mode: Mode = { kind: "off" };
 	let rotation = 0;
-	let placement: Placement | undefined;
-	let target: Model | undefined;
+	let plans = new Array<Plan>();
+	let target: SeenStructure | undefined;
 	/** No toque, a prévia fica onde o jogador tocou até ele confirmar. */
 	let touchPoint: Vector2 | undefined;
+	let dragFrom: Placement | undefined;
 
-	const ghost = new Instance("Part");
-	ghost.Name = "Prévia";
-	ghost.Anchored = true;
-	ghost.CanCollide = false;
-	ghost.CanQuery = false;
-	ghost.CanTouch = false;
-	ghost.CastShadow = false;
-	ghost.Material = Enum.Material.ForceField;
-	ghost.Transparency = 0.3;
-	const front = ghost.Clone();
-	front.Name = "Frente";
-	front.Material = Enum.Material.Neon;
-	front.Transparency = 0;
 	const highlight = new Instance("Highlight");
-	highlight.FillColor = theme.invalid;
-	highlight.OutlineColor = theme.invalid;
 	highlight.Enabled = false;
 	highlight.Parent = gui;
 
 	const bar = panel(gui, "Construcao");
 	bar.AnchorPoint = new Vector2(0.5, 1);
 	bar.Position = new UDim2(0.5, 0, 1, -14);
-	bar.Size = UDim2.fromOffset(700, 66);
-	scaleToFit(bar, 740);
+	bar.Size = UDim2.fromOffset(820, 72);
+	bar.Visible = false;
+	scaleToFit(bar, 860);
 	const layout = new Instance("UIListLayout");
 	layout.FillDirection = Enum.FillDirection.Horizontal;
 	layout.HorizontalAlignment = Enum.HorizontalAlignment.Center;
@@ -127,130 +133,285 @@ export function mountBuilder(gui: ScreenGui) {
 
 	const actions = panel(gui, "Acoes");
 	actions.AnchorPoint = new Vector2(0.5, 1);
-	actions.Position = new UDim2(0.5, 0, 1, -88);
-	actions.Size = UDim2.fromOffset(560, 48);
+	actions.Size = UDim2.fromOffset(700, 76);
+	actions.Position = new UDim2(0.5, 0, 1, -96);
 	actions.Visible = false;
 	scaleToFit(actions, 740);
-	const status = label(actions, "", UDim2.fromOffset(12, 0), new UDim2(0, 220, 1, 0), 13, Enum.Font.GothamMedium);
+	const status = label(actions, "", UDim2.fromOffset(14, 4), UDim2.fromOffset(672, 22), 15, Enum.Font.GothamBold);
+	const tip = label(actions, "", UDim2.fromOffset(14, 28), UDim2.fromOffset(330, 42), 12, Enum.Font.Gotham, theme.muted);
+	tip.TextYAlignment = Enum.TextYAlignment.Top;
 
-	function tint(instance: TextButton, selected: boolean) {
-		instance.BackgroundColor3 = selected ? theme.orange : theme.group;
-		instance.TextColor3 = selected ? theme.surface : theme.text;
+	const choices = new Array<{ instance: TextButton; isActive: (mode: Mode) => boolean }>();
+
+	function hideGhosts(from = 0) {
+		for (let i = from; i < ghosts.size(); i++) ghosts[i].hide();
 	}
 
-	const choices = new Array<{ machine: MachineType; button: TextButton }>();
-	let removeButton: TextButton | undefined;
+	function tipFor(current: Mode): string {
+		if (current.kind === "build" && current.machine.id === "belt") return "Clique e arraste para fazer uma linha.\nScroll gira. Ctrl + scroll aproxima.";
+		if (current.kind === "build" || current.kind === "move") return "Clique para colocar. Scroll ou R gira.\nCtrl + scroll aproxima. Botão direito gira a vista.";
+		if (current.kind === "pick") return "Clique na construção.\nScroll aproxima. WASD move o drone.";
+		return "Escolha uma máquina abaixo ou clique em uma para abrir.\nWASD move. Botão direito gira. Scroll aproxima.";
+	}
 
 	function setMode(nextMode: Mode) {
+		const wasOff = mode.kind === "off";
 		mode = nextMode;
-		placement = undefined;
+		plans = [];
 		target = undefined;
 		touchPoint = undefined;
-		ghost.Parent = undefined;
-		front.Parent = undefined;
+		dragFrom = undefined;
+		hideGhosts();
 		highlight.Enabled = false;
-		actions.Visible = mode.kind !== "idle";
-		for (const choice of choices) tint(choice.button, nextMode.kind === "build" && nextMode.machine === choice.machine);
-		if (removeButton) tint(removeButton, mode.kind === "remove");
+		const isOpen = mode.kind !== "off";
+		bar.Visible = isOpen;
+		actions.Visible = isOpen;
+		showGrid(isOpen);
+		if (isOpen && wasOff) enterDrone();
+		if (!isOpen && !wasOff) leaveDrone();
+		if (mode.kind !== "idle" && mode.kind !== "off") inspector.close();
+		tip.Text = tipFor(nextMode);
+		if (nextMode.kind === "idle") {
+			status.Text = "Modo construção";
+			status.TextColor3 = theme.text;
+		}
+		for (const choice of choices) setSelected(choice.instance, choice.isActive(nextMode));
+	}
+
+	/** Motivo para não abrir o drone agora. */
+	function blockedBy(): string | undefined {
+		const state = getState();
+		if (!state) return "Conectando…";
+		if (state.role === "visitor") return reasonText("NOT_MEMBER");
+		if (player.GetAttribute(IN_ENCOUNTER) === true) return "Termine a expedição antes de construir.";
+		const root = player.Character?.FindFirstChild("HumanoidRootPart");
+		if (!root?.IsA("BasePart") || root.Position.Magnitude > BASE_DISTANCE) return "Volte ao posto para construir.";
+		return undefined;
+	}
+
+	function open(nextMode: Mode) {
+		const problem = mode.kind === "off" ? blockedBy() : undefined;
+		if (problem !== undefined) return showToast(problem);
+		setMode(nextMode);
+	}
+
+	function toggle() {
+		if (mode.kind === "off") open({ kind: "idle" });
+		else setMode({ kind: "off" });
+	}
+
+	/** Um passo para trás: solta a escolha e, sem escolha, sai do drone. */
+	function cancel() {
+		if (mode.kind === "off") return;
+		setMode(mode.kind === "idle" ? { kind: "off" } : { kind: "idle" });
 	}
 
 	function chooseMachine(machine: MachineType) {
-		setMode(mode.kind === "build" && mode.machine === machine ? { kind: "idle" } : { kind: "build", machine });
+		open(mode.kind === "build" && mode.machine === machine ? { kind: "idle" } : { kind: "build", machine });
 	}
 
-	function toggleRemove() {
-		setMode(mode.kind === "remove" ? { kind: "idle" } : { kind: "remove" });
+	function togglePick(action: "move" | "remove") {
+		open(mode.kind === "pick" && mode.action === action ? { kind: "idle" } : { kind: "pick", action });
 	}
 
-	function rotate() {
-		if (mode.kind === "build") rotation = (rotation + 1) % 4;
+	function rotate(turns: number) {
+		if (mode.kind !== "build" && mode.kind !== "move") return;
+		rotation = (rotation + turns + 4) % 4;
+		playSound("click", 0.3, 1.4, 0.3);
+	}
+
+	function placeAll() {
+		if (mode.kind !== "build") return;
+		const machine = mode.machine.id;
+		const valid = plans.filter((plan) => plan.reason === "OK");
+		if (valid.size() === 0) {
+			if (plans.size() > 0) showToast(reasonText(plans[0].reason));
+			return;
+		}
+		playSound("land", 0.4, 1.2, 0.4);
+		// Espaça o envio para caber no limite de comandos.
+		valid.forEach((plan, index) => {
+			const { cx, cz } = plan.placement;
+			const facing = plan.placement.rotation;
+			task.delay(index * SEND_INTERVAL, () => send({ kind: "build", machine, cx, cz, rotation: facing }));
+		});
+		// Emendar a próxima peça na mesma direção é o caso comum.
+		rotation = valid[valid.size() - 1].placement.rotation;
 	}
 
 	function confirm() {
-		if (mode.kind === "build" && placement) {
-			sendBuild({ machine: mode.machine.id, cx: placement.cx, cz: placement.cz, rotation: placement.rotation });
-		} else if (mode.kind === "remove" && target) {
-			const id = attribute(target, STRUCTURE_ID);
-			if (id !== undefined) sendRemove(id);
+		if (mode.kind === "build") {
+			placeAll();
+		} else if (mode.kind === "move" && plans.size() > 0) {
+			const { placement, reason } = plans[0];
+			if (reason !== "OK") return showToast(reasonText(reason));
+			send({ kind: "move", structureId: mode.structure.id, cx: placement.cx, cz: placement.cz, rotation: placement.rotation });
+			setMode({ kind: "pick", action: "move" });
+		} else if (mode.kind === "pick" && target) {
+			if (mode.action === "remove") {
+				send({ kind: "remove", structureId: target.id });
+			} else {
+				const structure = target;
+				rotation = structure.placement.rotation;
+				setMode({ kind: "move", structure });
+			}
 		}
 	}
 
-	MACHINES.forEach((machine, index) => {
-		const content = `${index + 1}  ${machine.name}\n${machine.cost} ferro`;
-		const choice = button(bar, machine.id, content, UDim2.fromOffset(92, 52), () => chooseMachine(machine));
-		choice.LayoutOrder = index;
-		choices.push({ machine, button: choice });
+	function addChoice(instance: TextButton, order: number, isActive: (mode: Mode) => boolean) {
+		instance.LayoutOrder = order;
+		choices.push({ instance, isActive });
+	}
+	BUILDABLE.forEach((machine, index) => {
+		const card = button(bar, machine.id, "", UDim2.fromOffset(104, 58), () => chooseMachine(machine));
+		keyBadge(card, `${index + 1}`, UDim2.fromOffset(8, 16));
+		swatch(card, machine.color, UDim2.fromOffset(84, 16), 12);
+		label(card, machine.name, UDim2.fromOffset(8, 28), UDim2.fromOffset(92, 16), 13, Enum.Font.GothamMedium);
+		label(card, `${machine.cost} ferro`, UDim2.fromOffset(8, 42), UDim2.fromOffset(92, 14), 11, Enum.Font.Gotham, theme.muted);
+		const isActive = (current: Mode) => current.kind === "build" && current.machine === machine;
+		addChoice(card, index, isActive);
 	});
-	removeButton = button(bar, "remover", "X  Remover", UDim2.fromOffset(92, 52), toggleRemove);
-	removeButton.LayoutOrder = 99;
+	const isMoving = (current: Mode) => current.kind === "move" || (current.kind === "pick" && current.action === "move");
+	addChoice(keyButton(bar, "mover", "M", "Mover", UDim2.fromOffset(96, 58), () => togglePick("move")), 98, isMoving);
+	const isRemoving = (current: Mode) => current.kind === "pick" && current.action === "remove";
+	addChoice(keyButton(bar, "remover", "X", "Remover", UDim2.fromOffset(104, 58), () => togglePick("remove")), 99, isRemoving);
 
 	const place = (instance: TextButton, x: number) => {
-		instance.AnchorPoint = new Vector2(0, 0.5);
-		instance.Position = new UDim2(0, x, 0.5, 0);
+		instance.Position = UDim2.fromOffset(x, 30);
 	};
-	place(button(actions, "girar", "R  Girar", UDim2.fromOffset(92, 36), rotate), 244);
-	place(button(actions, "confirmar", "Confirmar", UDim2.fromOffset(104, 36), confirm), 342);
-	place(button(actions, "cancelar", "Q  Cancelar", UDim2.fromOffset(98, 36), () => setMode({ kind: "idle" })), 452);
+	place(keyButton(actions, "girar", "R", "Girar", UDim2.fromOffset(76, 38), () => rotate(1)), 350);
+	place(button(actions, "perto", "+", UDim2.fromOffset(38, 38), () => zoomDrone(-ZOOM_STEP * 2)), 432);
+	place(button(actions, "longe", "−", UDim2.fromOffset(38, 38), () => zoomDrone(ZOOM_STEP * 2)), 474);
+	place(button(actions, "confirmar", "Colocar", UDim2.fromOffset(76, 38), confirm), 518);
+	place(keyButton(actions, "cancelar", "Q", "Voltar", UDim2.fromOffset(84, 38), cancel), 600);
+
+	function inspect(screen: Vector2) {
+		const structure = structureAt(screen);
+		if (structure) inspector.open(structure);
+		else inspector.close();
+	}
+
+	function pointer(): Vector2 | undefined {
+		if (input.GetLastInputType() === Enum.UserInputType.Touch || touchPoint) return touchPoint;
+		return aimPoint();
+	}
+
+	function pointed(machine: MachineType): Placement | undefined {
+		const screen = pointer();
+		const point = screen && floorPoint(screen);
+		return point && placementAt(machine, point, rotation);
+	}
 
 	input.InputBegan.Connect((event, processed) => {
 		if (processed) return;
 		const digit = DIGITS.indexOf(event.KeyCode);
-		if (digit >= 0 && digit < MACHINES.size()) chooseMachine(MACHINES[digit]);
-		else if (event.KeyCode === Enum.KeyCode.R) rotate();
-		else if (event.KeyCode === Enum.KeyCode.X) toggleRemove();
-		else if (event.KeyCode === Enum.KeyCode.Q) setMode({ kind: "idle" });
-		else if (event.UserInputType === Enum.UserInputType.MouseButton1) confirm();
+		if (player.GetAttribute(IN_ENCOUNTER) === true) return;
+		if (digit >= 0 && digit < BUILDABLE.size()) chooseMachine(BUILDABLE[digit]);
+		else if (event.KeyCode === Enum.KeyCode.B) toggle();
+		else if (event.KeyCode === Enum.KeyCode.R) rotate(1);
+		else if (event.KeyCode === Enum.KeyCode.M) togglePick("move");
+		else if (event.KeyCode === Enum.KeyCode.X) togglePick("remove");
+		else if (event.KeyCode === Enum.KeyCode.Q) cancel();
+		else if (event.UserInputType === Enum.UserInputType.MouseButton1) {
+			if (mode.kind === "off" || mode.kind === "idle") inspect(aimPoint());
+			else if (mode.kind === "build" && mode.machine.id === "belt") dragFrom = pointed(mode.machine);
+			else confirm();
+		}
+	});
+	input.InputEnded.Connect((event) => {
+		if (event.UserInputType !== Enum.UserInputType.MouseButton1 || !dragFrom) return;
+		placeAll();
+		dragFrom = undefined;
+	});
+	input.InputChanged.Connect((event, processed) => {
+		if (processed || mode.kind === "off" || event.UserInputType !== Enum.UserInputType.MouseWheel) return;
+		const direction = event.Position.Z > 0 ? 1 : -1;
+		const wantsZoom = input.IsKeyDown(Enum.KeyCode.LeftControl) || input.IsKeyDown(Enum.KeyCode.RightControl);
+		if (!wantsZoom && (mode.kind === "build" || mode.kind === "move")) rotate(direction);
+		else zoomDrone(-direction * ZOOM_STEP);
 	});
 	input.TouchTapInWorld.Connect((position, processed) => {
-		if (!processed && mode.kind !== "idle") touchPoint = position;
+		if (processed) return;
+		if (mode.kind === "off" || mode.kind === "idle") inspect(position);
+		else touchPoint = position;
 	});
 
-	function pointer(): Vector2 | undefined {
-		if (input.GetLastInputType() === Enum.UserInputType.Touch || touchPoint) return touchPoint;
-		return input.GetMouseLocation();
-	}
-
-	function showGhost(machine: MachineType, current: Placement) {
-		const reason = predict(machine, current);
-		const color = reason === "OK" ? theme.valid : theme.invalid;
-		const origin = new CFrame(placementCenter(machine, current)).mul(CFrame.Angles(0, (-current.rotation * math.pi) / 2, 0));
-		ghost.Size = new Vector3(machine.width * CELL_SIZE, machine.height, machine.depth * CELL_SIZE);
-		ghost.CFrame = origin.mul(new CFrame(0, machine.height / 2, 0));
-		ghost.Color = color;
-		front.Size = new Vector3(machine.width * CELL_SIZE * 0.6, 0.3, 0.8);
-		front.CFrame = origin.mul(new CFrame(0, machine.height + 0.2, (-machine.depth * CELL_SIZE) / 2 + 0.4));
-		front.Color = color;
-		ghost.Parent = workspace.CurrentCamera;
-		front.Parent = workspace.CurrentCamera;
-		status.Text = reason === "OK" ? `✓ ${machine.name}: pronto para construir` : `✕ ${reasonText(reason)}`;
-		status.TextColor3 = color;
-	}
-
-	runService.RenderStepped.Connect(() => {
-		if (mode.kind === "idle") return;
+	function showTarget(action: "move" | "remove") {
 		const screen = pointer();
-		if (mode.kind === "remove") {
-			target = screen && structureAt(screen);
-			highlight.Adornee = target;
-			highlight.Enabled = target !== undefined;
-			status.Text = target ? `Remover ${target.Name} e recuperar o custo` : "Aponte para uma construção";
+		const found = screen && structureAt(screen);
+		// Estruturas fixas do cenário têm dono zero.
+		const isFixed = found && numberAttribute(found.model, STRUCTURE_OWNER) === 0;
+		target = found && !isFixed && getState()?.grants.remove ? found : undefined;
+		const color = action === "remove" ? theme.invalid : theme.cyan;
+		highlight.FillColor = color;
+		highlight.OutlineColor = color;
+		highlight.Adornee = target?.model;
+		highlight.Enabled = target !== undefined;
+		status.TextColor3 = theme.text;
+		if (!target) status.Text = found ? reasonText("NOT_AUTHORIZED") : "Aponte para uma construção";
+		else if (action === "remove") status.Text = `Remover ${target.machine.name} e recuperar custo e itens`;
+		else status.Text = `Mover ${target.machine.name}`;
+	}
+
+	function showPlans(machine: MachineType, moving: SeenStructure | undefined) {
+		const current = pointed(machine);
+		if (!current) {
+			plans = [];
+			hideGhosts();
+			status.Text = "Aponte para o piso do posto";
 			status.TextColor3 = theme.text;
 			return;
 		}
+		const others = seenStructures().filter((other) => !moving || other.id !== moving.id);
+		const taken = new Set<string>();
+		for (const other of others) for (const cell of occupiedCells(other.machine, other.placement)) taken.add(cell);
+		let iron = getState()?.inventory[COST_ITEM] ?? 0;
+		const placements = dragFrom ? beltLine(dragFrom, current, rotation) : [current];
+		plans = placements.map((placement) => {
+			const reason = predict(machine, placement, taken, iron, moving !== undefined);
+			if (reason === "OK") iron -= machine.cost;
+			return { placement, reason };
+		});
+		plans.forEach((plan, index) => {
+			if (!ghosts[index]) ghosts[index] = new Ghost();
+			const ports = { entry: index === 0, exit: index === plans.size() - 1 };
+			ghosts[index].show(machine, plan.placement, plan.reason === "OK", others, ports);
+		});
+		hideGhosts(plans.size());
 
-		const point = screen && floorPoint(screen);
-		placement = point && placementAt(mode.machine, point, rotation);
-		if (placement) {
-			showGhost(mode.machine, placement);
+		const valid = plans.filter((plan) => plan.reason === "OK").size();
+		const problem = plans.find((plan) => plan.reason !== "OK");
+		const facing = plans[plans.size() - 1].placement.rotation;
+		const direction = hasOutput(machine) ? ` · saída para o ${DIRECTION_NAMES[facing]}` : "";
+		const amount = plans.size() > 1 ? `${valid} × ` : "";
+		if (problem && valid === 0) {
+			status.Text = `X ${machine.name}: ${reasonText(problem.reason)}${direction}`;
+			status.TextColor3 = theme.invalid;
 		} else {
-			ghost.Parent = undefined;
-			front.Parent = undefined;
-			status.Text = "Aponte para o piso";
-			status.TextColor3 = theme.text;
+			const cost = moving ? "" : ` · ${valid * machine.cost} ferro`;
+			status.Text = `${amount}${machine.name}${cost}${direction}`;
+			status.TextColor3 = problem ? theme.orange : theme.valid;
 		}
+	}
+
+	runService.RenderStepped.Connect(() => {
+		if (mode.kind === "off" || mode.kind === "idle") return;
+		if (mode.kind === "pick") return showTarget(mode.action);
+		if (mode.kind === "move") showPlans(mode.structure.machine, mode.structure);
+		else showPlans(mode.machine, undefined);
 	});
 
-	onState((state) => {
-		bar.Visible = state.echoOnline;
+	function refreshAvailability() {
+		const inEncounter = player.GetAttribute(IN_ENCOUNTER) === true;
+		const visiting = getState()?.role === "visitor";
+		if (inEncounter) inspector.close();
+		if ((inEncounter || visiting) && mode.kind !== "off") setMode({ kind: "off" });
+	}
+	onState(refreshAvailability);
+	player.GetAttributeChangedSignal(IN_ENCOUNTER).Connect(refreshAvailability);
+	// Ao renascer, a câmera volta ao personagem novo.
+	player.CharacterAdded.Connect(() => {
+		if (mode.kind !== "off") setMode({ kind: "off" });
 	});
+	return { isBusy: () => mode.kind !== "off", toggle };
 }

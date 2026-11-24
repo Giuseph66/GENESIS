@@ -1,15 +1,15 @@
-import { findMachine, MachineId, MachineType } from "../shared/catalog";
-import { isInsideGrid, isReserved, occupiedCells, Placement } from "../shared/grid";
+import { findMachine, MachineId, MachineType, requireMachine } from "../shared/catalog";
+import { isInsideGrid, isOnVein, isReserved, occupiedCells, Placement } from "../shared/grid";
 import type { Reason } from "../shared/protocol";
 
 export interface Structure extends Placement {
 	readonly id: number;
 	readonly machine: MachineId;
+	/** Zero indica estrutura fixa do cenário. */
 	readonly ownerId: number;
 }
 
 export interface BuildingsSnapshot {
-	readonly schemaVersion: 1;
 	readonly nextId: number;
 	readonly structures: ReadonlyArray<Structure>;
 }
@@ -20,11 +20,16 @@ export class Buildings {
 	private readonly occupancy = new Map<string, number>();
 	private nextId = 1;
 
-	public check(machine: MachineType, placement: Placement): Reason {
+	/** `ignoreId` permite validar o reposicionamento sobre as próprias células. */
+	public check(machine: MachineType, placement: Placement, ignoreId?: number): Reason {
 		if (!isInsideGrid(machine, placement)) return "OUT_OF_BOUNDS";
 		if (isReserved(machine, placement)) return "RESERVED_AREA";
-		const blocked = occupiedCells(machine, placement).some((cell) => this.occupancy.has(cell));
-		return blocked ? "CELL_OCCUPIED" : "OK";
+		const blocked = occupiedCells(machine, placement).some((cell) => {
+			const occupant = this.occupancy.get(cell);
+			return occupant !== undefined && occupant !== ignoreId;
+		});
+		if (blocked) return "CELL_OCCUPIED";
+		return machine.needsVein && !isOnVein(machine, placement) ? "NO_VEIN" : "OK";
 	}
 
 	/** Chame `check` antes. Lança erro se a posição for inválida. */
@@ -42,20 +47,44 @@ export class Buildings {
 		return structure;
 	}
 
+	/** Muda a posição e mantém o ID. Chame `check` com o próprio ID antes. */
+	public move(id: number, placement: Placement): Structure {
+		const previous = this.structures.get(id);
+		assert(previous, `Estrutura ${id} inexistente.`);
+		const machine = requireMachine(previous.machine);
+		const reason = this.check(machine, placement, id);
+		assert(reason === "OK", `Posição inválida: ${reason}.`);
+		this.remove(id);
+		const structure: Structure = {
+			id,
+			machine: previous.machine,
+			ownerId: previous.ownerId,
+			cx: placement.cx,
+			cz: placement.cz,
+			rotation: placement.rotation,
+		};
+		this.insert(machine, structure);
+		return structure;
+	}
+
 	public get(id: number): Structure | undefined {
 		return this.structures.get(id);
 	}
 
+	public at(cell: string): Structure | undefined {
+		const id = this.occupancy.get(cell);
+		return id === undefined ? undefined : this.structures.get(id);
+	}
+
 	public remove(id: number): Structure | undefined {
 		const structure = this.structures.get(id);
-		const machine = structure && findMachine(structure.machine);
-		if (!structure || !machine) return undefined;
-
-		for (const cell of occupiedCells(machine, structure)) this.occupancy.delete(cell);
+		if (!structure) return undefined;
+		for (const cell of occupiedCells(requireMachine(structure.machine), structure)) this.occupancy.delete(cell);
 		this.structures.delete(id);
 		return structure;
 	}
 
+	/** Em ordem de ID, que é a ordem estável da simulação. */
 	public all(): Array<Structure> {
 		const list = new Array<Structure>();
 		for (const [, structure] of this.structures) list.push(structure);
@@ -64,12 +93,11 @@ export class Buildings {
 	}
 
 	public snapshot(): BuildingsSnapshot {
-		return { schemaVersion: 1, nextId: this.nextId, structures: this.all() };
+		return { nextId: this.nextId, structures: this.all() };
 	}
 
 	/** Recria o grid e recusa dados inconsistentes, sem corrigir em silêncio. */
 	public static restore(snapshot: BuildingsSnapshot): Buildings {
-		assert(snapshot.schemaVersion === 1, "Versão de snapshot não suportada.");
 		const buildings = new Buildings();
 		for (const structure of snapshot.structures) {
 			const machine = findMachine(structure.machine);

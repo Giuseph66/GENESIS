@@ -10,7 +10,7 @@ Depois de uma catástrofe, o jogador desperta numa instalação industrial subte
 
 | Missão proposta | Evidência que permite avançar | O que muda |
 | --- | --- | --- |
-| `awakening.echo` — Sinal de emergência | Jogador interage com ECHO | ECHO indica um painel de emergência e a rota para o gerador. |
+| `awakening.supplies` — Primeiros insumos | Ferro e carvão minerados | ECHO está ativo desde o início e indica os depósitos. |
 | `awakening.power` — Luz de serviço | Gerador restaurado e energizando a base | Iluminação secundária revela uma indicação de evacuação que aponta para um setor selado. |
 | `awakening.automation` — Linha de suprimento | Primeiro componente chega ao armazém pela linha automática | ECHO explica a função do terminal e libera a pesquisa de acesso. |
 | `awakening.access` — Setor de manutenção | Pesquisa **Acesso ao Setor de Manutenção** concluída | O terminal abre o acesso à expedição. |

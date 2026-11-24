@@ -59,6 +59,39 @@ As pesquisas são iniciadas no terminal da base. Custos saem do estoque designad
 
 Reserve estados explícitos para carregando, vazio, concluído e rejeitado. Teste alvos tocáveis, áreas reservadas do dispositivo, textos maiores e conflitos entre câmera e controles. Defina ações como Interagir, Rotacionar, Confirmar, Cancelar e Esquivar em um mapeamento comum de entrada. [Entrada multiplataforma no Roblox](https://create.roblox.com/docs/input)
 
+### Controles atuais
+
+| Ação | Teclado e mouse | Toque |
+| --- | --- | --- |
+| Trocar câmera | `V`, ou rolagem até o fim | Botão Câmera |
+| Correr / pular | `Shift` / `Espaço` | Botão Correr / botão do Roblox |
+| Minerar | Segurar `E`, ou clique na primeira pessoa | Segurar o aviso da jazida |
+| Abrir construção | `B`, ou `1` a `5` | Botão Construir |
+| Girar máquina | Scroll ou `R` | Botão Girar |
+| Colocar / linha de esteiras | Clique / clicar e arrastar | Toque e Colocar |
+| Mover o drone | `WASD`; `Ctrl` + scroll aproxima; botão direito gira | Arrastar e pinça |
+| Mover / remover / voltar | `M` / `X` / `Q` | Botões |
+| Abrir máquina | Clique | Toque |
+| Combate | Clique, `F`, `Q` | Botões |
+| Melhoria | `1` a `3` ou clique | Toque |
+| Ajuda / ECHO / diário / grupo | `H` / `T` / `J` / `P` | Menu fixo |
+| Soltar o mouse na primeira pessoa | `Tab` | — |
+
+### Jogabilidade planejada
+
+| Item | Motivo e cuidado |
+| --- | --- |
+| Construção fora do platô | Exige nivelar ou adaptar o piso ao relevo e guardar a alteração, hoje descartada com o bloco. |
+| Ciclo de dia e noite | Precisa de luz suficiente à noite: o proprietário pediu cenário claro. |
+| Animações e ferramentas visíveis a outros jogadores | Depende de animações próprias publicadas na conta do proprietário. |
+| Passos por material, ambiente e trilha | Depende de áudio original ou licenciado. |
+| Pulo duplo, escalada, deslizar e planar | Candidatos a melhoria permanente. Testar contra a geometria das expedições. |
+| Nado com fôlego e recursos submersos | Lagos já existem; hoje o nado é o padrão do Roblox. |
+| Ferramentas com níveis e cobre, pedra e madeira | Os biomas permitem recursos próprios por região. |
+| Mapa, bússola e pontos de interesse com recompensa | Ruínas já aparecem no mundo, sem conteúdo. |
+| Criaturas no mundo aberto | Reutilizar os estados dos inimigos, com Pathfinding. |
+| Cooperação em expedições | Hoje há uma instância por jogador. |
+
 ## Direção visual e sonora
 
 Low poly industrial, volumes legíveis e contraste entre metal, luzes emissivas e vegetação. Use grafite `#15181D` para superfícies de interface, cinza `#303740` para agrupamentos, laranja `#FF9633` para ação e perigo, ciano `#38C9E8` para energia e branco `#E4E8ED` para texto principal. Combine cor com forma, ícone ou texto, especialmente em posicionamento e combate. Use primitivas para os primeiros modelos. Produza arte original no Blender quando houver ganho de leitura ou atmosfera.

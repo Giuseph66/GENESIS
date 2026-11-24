@@ -1,5 +1,11 @@
 # Geração procedural e expedições
 
+## Mundo aberto
+
+O servidor gera blocos de 128 studs ao redor dos jogadores, com a semente 7193, e descarta os distantes. A mesma coordenada produz sempre o mesmo relevo, bioma, cenário e jazidas. O platô do posto acompanha o grid e o relevo começa logo após a borda, com transição irregular.
+
+Cada bloco divide a geração entre quadros, com orçamento de 6 ms. O esgotamento de uma jazida é lembrado enquanto o servidor estiver ativo, mesmo com o bloco descarregado. Longe da origem, a precisão numérica do motor é o limite prático.
+
 ## Setor de manutenção
 
 A primeira expedição acontece em módulos de uma infraestrutura externa conectada à base. Proposta inicial: 5–7 salas, incluindo entrada segura, dois encontros, arena do Guardião e extração. Uma ramificação opcional oferece um depósito ou evento. Uma melhoria é oferecida no caminho principal antes do chefe, permitindo demonstrar o sistema em qualquer seed válida.

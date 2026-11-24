@@ -6,10 +6,10 @@
 			"className": "Part",
 			"properties": {
 				"Anchored": true,
-				"Size": [512, 4, 512],
+				"Size": [190, 4, 190],
 				"CFrame": [0, -2.05, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-				"Color": [0.415686, 0.498039, 0.247059],
-				"Material": "Grass"
+				"Color": [0.588235, 0.52549, 0.407843],
+				"Material": "Ground"
 			}
 		},
 		{
@@ -19,7 +19,7 @@
 				"Anchored": true,
 				"Size": [64, 1, 54],
 				"CFrame": [0, -0.5, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-				"Color": [0.329412, 0.360784, 0.4],
+				"Color": [0.203922, 0.219608, 0.243137],
 				"Material": "Concrete"
 			}
 		},
@@ -272,8 +272,8 @@
 				"Anchored": true,
 				"Size": [7, 2.5, 4],
 				"CFrame": [-15, 1.25, -11, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-				"Color": [0.407843, 0.447059, 0.494118],
-				"Material": "Metal"
+				"Color": [0.478431, 0.423529, 0.376471],
+				"Material": "CorrodedMetal"
 			}
 		},
 		{
@@ -344,8 +344,8 @@
 				"Anchored": true,
 				"Size": [7, 2.5, 4],
 				"CFrame": [15, 1.25, -11, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-				"Color": [0.407843, 0.447059, 0.494118],
-				"Material": "Metal"
+				"Color": [0.478431, 0.423529, 0.376471],
+				"Material": "CorrodedMetal"
 			}
 		},
 		{
@@ -418,6 +418,1615 @@
 				"CFrame": [0, 5.5, -30.6, 1, 0, 0, 0, 1, 0, 0, 0, 1],
 				"Color": [0.470588, 0.494118, 0.517647],
 				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Veio de ferro",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [24, 0.2, 24],
+				"CFrame": [44, -0.02, -4, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.588235, 0.360784, 0.243137],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Veio de ferro",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [24, 0.2, 24],
+				"CFrame": [-44, -0.02, -4, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.588235, 0.360784, 0.243137],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-28, -0.008, -22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.368627, 0.384314, 0.407843],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-28, -0.008, -13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.372549, 0.388235, 0.411765],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-28, -0.008, -4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.360784, 0.376471, 0.4],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-28, -0.008, 4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.380392, 0.396078, 0.419608],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-28, -0.008, 13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.384314, 0.4, 0.423529],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-28, -0.008, 22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.364706, 0.380392, 0.403922],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-20, -0.008, -22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.360784, 0.376471, 0.4],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-20, -0.008, -13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.470588, 0.482353, 0.494118],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-20, -0.008, -4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.466667, 0.478431, 0.490196],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-20, -0.008, 4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.490196, 0.501961, 0.513725],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-20, -0.008, 13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.498039, 0.509804, 0.521569],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-20, -0.008, 22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.372549, 0.388235, 0.411765],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-12, -0.008, -22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.356863, 0.372549, 0.396078],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-12, -0.008, -13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.478431, 0.490196, 0.501961],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-12, -0.008, -4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.498039, 0.509804, 0.521569],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-12, -0.008, 4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.498039, 0.509804, 0.521569],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-12, -0.008, 13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.486275, 0.498039, 0.509804],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-12, -0.008, 22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.372549, 0.388235, 0.411765],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-4, -0.008, -22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.364706, 0.380392, 0.403922],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-4, -0.008, -13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.470588, 0.482353, 0.494118],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-4, -0.008, -4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.482353, 0.494118, 0.505882],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-4, -0.008, 4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.478431, 0.490196, 0.501961],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-4, -0.008, 13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.466667, 0.478431, 0.490196],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [-4, -0.008, 22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.396078, 0.411765, 0.435294],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [4, -0.008, -22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.372549, 0.388235, 0.411765],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [4, -0.008, -13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.482353, 0.494118, 0.505882],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [4, -0.008, -4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.478431, 0.490196, 0.501961],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [4, -0.008, 4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.47451, 0.486275, 0.498039],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [4, -0.008, 13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.482353, 0.494118, 0.505882],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [4, -0.008, 22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.372549, 0.388235, 0.411765],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [12, -0.008, -22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.396078, 0.411765, 0.435294],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [12, -0.008, -13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.486275, 0.498039, 0.509804],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [12, -0.008, -4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.470588, 0.482353, 0.494118],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [12, -0.008, 4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.501961, 0.513725, 0.52549],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [12, -0.008, 13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.486275, 0.498039, 0.509804],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [12, -0.008, 22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.396078, 0.411765, 0.435294],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [20, -0.008, -22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.380392, 0.396078, 0.419608],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [20, -0.008, -13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.498039, 0.509804, 0.521569],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [20, -0.008, -4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.478431, 0.490196, 0.501961],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [20, -0.008, 4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.47451, 0.486275, 0.498039],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [20, -0.008, 13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.478431, 0.490196, 0.501961],
+				"Material": "Concrete"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [20, -0.008, 22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.384314, 0.4, 0.423529],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [28, -0.008, -22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.372549, 0.388235, 0.411765],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [28, -0.008, -13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.360784, 0.376471, 0.4],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [28, -0.008, -4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.388235, 0.403922, 0.427451],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [28, -0.008, 4.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.372549, 0.388235, 0.411765],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [28, -0.008, 13.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.356863, 0.372549, 0.396078],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Laje",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [7.7, 0.04, 8.7],
+				"CFrame": [28, -0.008, 22.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.372549, 0.388235, 0.411765],
+				"Material": "DiamondPlate"
+			}
+		},
+		{
+			"name": "Poste",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [0.7, 14, 0.7],
+				"CFrame": [-30.5, 7, -25.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.227451, 0.25098, 0.282353],
+				"Material": "Metal"
+			}
+		},
+		{
+			"name": "Lâmpada",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [2.6, 0.4, 1],
+				"CFrame": [-29.1, 13.8, -25.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [1.0, 0.92549, 0.784314],
+				"Material": "Neon"
+			},
+			"children": [
+				{
+					"name": "PointLight",
+					"className": "PointLight",
+					"properties": {
+						"Brightness": 1.2,
+						"Color": [1, 0.92, 0.78],
+						"Range": 30
+					}
+				}
+			]
+		},
+		{
+			"name": "Poste",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [0.7, 14, 0.7],
+				"CFrame": [-30.5, 7, 25.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.227451, 0.25098, 0.282353],
+				"Material": "Metal"
+			}
+		},
+		{
+			"name": "Lâmpada",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [2.6, 0.4, 1],
+				"CFrame": [-29.1, 13.8, 25.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [1.0, 0.92549, 0.784314],
+				"Material": "Neon"
+			},
+			"children": [
+				{
+					"name": "PointLight",
+					"className": "PointLight",
+					"properties": {
+						"Brightness": 1.2,
+						"Color": [1, 0.92, 0.78],
+						"Range": 30
+					}
+				}
+			]
+		},
+		{
+			"name": "Poste",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [0.7, 14, 0.7],
+				"CFrame": [30.5, 7, -25.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.227451, 0.25098, 0.282353],
+				"Material": "Metal"
+			}
+		},
+		{
+			"name": "Lâmpada",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [2.6, 0.4, 1],
+				"CFrame": [29.1, 13.8, -25.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [1.0, 0.92549, 0.784314],
+				"Material": "Neon"
+			},
+			"children": [
+				{
+					"name": "PointLight",
+					"className": "PointLight",
+					"properties": {
+						"Brightness": 1.2,
+						"Color": [1, 0.92, 0.78],
+						"Range": 30
+					}
+				}
+			]
+		},
+		{
+			"name": "Poste",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [0.7, 14, 0.7],
+				"CFrame": [30.5, 7, 25.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.227451, 0.25098, 0.282353],
+				"Material": "Metal"
+			}
+		},
+		{
+			"name": "Lâmpada",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [2.6, 0.4, 1],
+				"CFrame": [29.1, 13.8, 25.5, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [1.0, 0.92549, 0.784314],
+				"Material": "Neon"
+			},
+			"children": [
+				{
+					"name": "PointLight",
+					"className": "PointLight",
+					"properties": {
+						"Brightness": 1.2,
+						"Color": [1, 0.92, 0.78],
+						"Range": 30
+					}
+				}
+			]
+		},
+		{
+			"name": "Contêiner",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [6, 6, 7],
+				"CFrame": [-26, 3, 20, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.690196, 0.329412, 0.188235],
+				"Material": "CorrodedMetal"
+			}
+		},
+		{
+			"name": "Contêiner",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [6, 6, 7],
+				"CFrame": [-26, 3, 12, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.235294, 0.384314, 0.478431],
+				"Material": "CorrodedMetal"
+			}
+		},
+		{
+			"name": "Contêiner",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [6, 6, 7],
+				"CFrame": [26, 3, -21, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.690196, 0.329412, 0.188235],
+				"Material": "CorrodedMetal"
+			}
+		},
+		{
+			"name": "Barril",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [4, 2.6, 2.6],
+				"CFrame": [-21, 2, 21, 0, -1, 0, 1, 0, 0, 0, 0, 1],
+				"Color": [0.784314, 0.588235, 0.196078],
+				"Material": "Metal",
+				"Shape": "Cylinder"
+			}
+		},
+		{
+			"name": "Barril",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [4, 2.6, 2.6],
+				"CFrame": [-19, 2, 23, 0, -1, 0, 1, 0, 0, 0, 0, 1],
+				"Color": [0.352941, 0.392157, 0.431373],
+				"Material": "Metal",
+				"Shape": "Cylinder"
+			}
+		},
+		{
+			"name": "Barril",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [4, 2.6, 2.6],
+				"CFrame": [21, 2, -23, 0, -1, 0, 1, 0, 0, 0, 0, 1],
+				"Color": [0.352941, 0.392157, 0.431373],
+				"Material": "Metal",
+				"Shape": "Cylinder"
+			}
+		},
+		{
+			"name": "Cano",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [20, 1, 1],
+				"CFrame": [-20.0, 1.2, -25.8, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.470588, 0.501961, 0.533333],
+				"Material": "Metal",
+				"Shape": "Cylinder"
+			}
+		},
+		{
+			"name": "Cano",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [20, 1, 1],
+				"CFrame": [20.0, 1.2, -25.8, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.470588, 0.501961, 0.533333],
+				"Material": "Metal",
+				"Shape": "Cylinder"
+			}
+		},
+		{
+			"name": "Antena",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": true,
+				"Size": [0.5, 18, 0.5],
+				"CFrame": [-9.5, 14, -31, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.27451, 0.305882, 0.337255],
+				"Material": "Metal"
+			}
+		},
+		{
+			"name": "Prato",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [5, 0.5, 5],
+				"CFrame": [-9.5, 22.8, -31, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+				"Color": [0.839216, 0.862745, 0.886275],
+				"Material": "Metal"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.81, 1.44, 1.63],
+				"CFrame": [-13.19, 2.905, -11.207, -0.8992, 0, -0.4375, 0, 1, 0, 0.4375, 0, -0.8992],
+				"Color": [0.745098, 0.439216, 0.258824],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.44, 1.16, 1.3],
+				"CFrame": [-16.761, 2.783, -10.25, -0.8141, 0, -0.5807, 0, 1, 0, 0.5807, 0, -0.8141],
+				"Color": [0.745098, 0.439216, 0.258824],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.14, 0.91, 1.02],
+				"CFrame": [-14.343, 2.768, -10.917, 0.9634, 0, 0.2682, 0, 1, 0, -0.2682, 0, 0.9634],
+				"Color": [0.745098, 0.439216, 0.258824],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.37, 1.1, 1.24],
+				"CFrame": [-12.414, 2.717, -11.209, -0.9834, 0, 0.1812, 0, 1, 0, -0.1812, 0, -0.9834],
+				"Color": [0.745098, 0.439216, 0.258824],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.61, 1.28, 1.45],
+				"CFrame": [-16.163, 2.813, -10.407, 0.2936, 0, 0.9559, 0, 1, 0, -0.9559, 0, 0.2936],
+				"Color": [0.745098, 0.439216, 0.258824],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.55, 1.24, 1.39],
+				"CFrame": [-12.898, 2.661, -12.052, -0.4287, 0, 0.9035, 0, 1, 0, -0.9035, 0, -0.4287],
+				"Color": [0.745098, 0.439216, 0.258824],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.71, 1.37, 1.54],
+				"CFrame": [-14.4, 2.742, -11.405, 0.1331, 0, 0.9911, 0, 1, 0, -0.9911, 0, 0.1331],
+				"Color": [0.745098, 0.439216, 0.258824],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.47, 1.17, 1.32],
+				"CFrame": [-17.377, 3.018, -10.05, 0.4402, 0, 0.8979, 0, 1, 0, -0.8979, 0, 0.4402],
+				"Color": [0.745098, 0.439216, 0.258824],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.69, 1.35, 1.52],
+				"CFrame": [-12.609, 2.611, -11.506, 0.959, 0, -0.2835, 0, 1, 0, 0.2835, 0, 0.959],
+				"Color": [0.745098, 0.439216, 0.258824],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.72, 1.38, 1.55],
+				"CFrame": [14.534, 3.166, -10.711, 0.9766, 0, -0.215, 0, 1, 0, 0.215, 0, 0.9766],
+				"Color": [0.133333, 0.137255, 0.14902],
+				"Material": "Slate"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.33, 1.07, 1.2],
+				"CFrame": [13.395, 2.866, -11.873, 0.4116, 0, -0.9114, 0, 1, 0, 0.9114, 0, 0.4116],
+				"Color": [0.133333, 0.137255, 0.14902],
+				"Material": "Slate"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.87, 1.5, 1.68],
+				"CFrame": [14.123, 2.606, -12.092, -0.7351, 0, 0.6779, 0, 1, 0, -0.6779, 0, -0.7351],
+				"Color": [0.133333, 0.137255, 0.14902],
+				"Material": "Slate"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.73, 1.38, 1.55],
+				"CFrame": [14.286, 2.774, -11.967, 0.4846, 0, 0.8747, 0, 1, 0, -0.8747, 0, 0.4846],
+				"Color": [0.133333, 0.137255, 0.14902],
+				"Material": "Slate"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.44, 1.15, 1.3],
+				"CFrame": [13.481, 2.636, -12.067, 0.9931, 0, -0.1175, 0, 1, 0, 0.1175, 0, 0.9931],
+				"Color": [0.133333, 0.137255, 0.14902],
+				"Material": "Slate"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.64, 1.31, 1.48],
+				"CFrame": [13.178, 2.625, -11.022, 0.4895, 0, 0.872, 0, 1, 0, -0.872, 0, 0.4895],
+				"Color": [0.133333, 0.137255, 0.14902],
+				"Material": "Slate"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.9, 1.52, 1.71],
+				"CFrame": [13.036, 2.918, -10.343, 0.0067, 0, 1.0, 0, 1, 0, -1.0, 0, 0.0067],
+				"Color": [0.133333, 0.137255, 0.14902],
+				"Material": "Slate"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.89, 1.51, 1.7],
+				"CFrame": [14.884, 2.745, -11.215, -0.8413, 0, 0.5405, 0, 1, 0, -0.5405, 0, -0.8413],
+				"Color": [0.133333, 0.137255, 0.14902],
+				"Material": "Slate"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.44, 1.15, 1.29],
+				"CFrame": [13.693, 3.134, -10.205, 0.9733, 0, 0.2295, 0, 1, 0, -0.2295, 0, 0.9733],
+				"Color": [0.133333, 0.137255, 0.14902],
+				"Material": "Slate"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.73, 0.26, 0.73],
+				"CFrame": [38.597, 0.1, -9.667, -0.9999, 0, 0.0105, 0, 1, 0, -0.0105, 0, -0.9999],
+				"Color": [0.768627, 0.462745, 0.27451],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.16, 0.41, 1.16],
+				"CFrame": [38.757, 0.1, -7.85, 0.1373, 0, -0.9905, 0, 1, 0, 0.9905, 0, 0.1373],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.79, 0.63, 1.79],
+				"CFrame": [41.865, 0.1, 4.821, -0.9176, 0, -0.3975, 0, 1, 0, 0.3975, 0, -0.9176],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.49, 0.52, 1.49],
+				"CFrame": [33.891, 0.1, -6.476, 0.6866, 0, -0.727, 0, 1, 0, 0.727, 0, 0.6866],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.66, 0.58, 1.66],
+				"CFrame": [52.795, 0.1, 5.341, 0.2437, 0, 0.9698, 0, 1, 0, -0.9698, 0, 0.2437],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.22, 0.43, 1.22],
+				"CFrame": [52.815, 0.1, -8.069, -0.2853, 0, 0.9584, 0, 1, 0, -0.9584, 0, -0.2853],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.42, 0.5, 1.42],
+				"CFrame": [48.091, 0.1, -9.097, -0.9848, 0, -0.1735, 0, 1, 0, 0.1735, 0, -0.9848],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.78, 0.27, 0.78],
+				"CFrame": [54.364, 0.1, 6.159, 0.9617, 0, -0.2742, 0, 1, 0, 0.2742, 0, 0.9617],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.13, 0.4, 1.13],
+				"CFrame": [46.63, 0.1, 1.87, 0.3613, 0, 0.9324, 0, 1, 0, -0.9324, 0, 0.3613],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.77, 0.27, 0.77],
+				"CFrame": [36.68, 0.1, -1.026, -0.499, 0, -0.8666, 0, 1, 0, 0.8666, 0, -0.499],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.14, 0.4, 1.14],
+				"CFrame": [41.59, 0.1, 2.556, -0.9845, 0, 0.1754, 0, 1, 0, -0.1754, 0, -0.9845],
+				"Color": [0.768627, 0.462745, 0.27451],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.71, 0.25, 0.71],
+				"CFrame": [52.281, 0.1, -12.45, 0.882, 0, -0.4713, 0, 1, 0, 0.4713, 0, 0.882],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.31, 0.46, 1.31],
+				"CFrame": [52.332, 0.1, -10.563, 0.7178, 0, -0.6962, 0, 1, 0, 0.6962, 0, 0.7178],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.6, 0.56, 1.6],
+				"CFrame": [45.372, 0.1, 2.255, -0.7786, 0, -0.6275, 0, 1, 0, 0.6275, 0, -0.7786],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.79, 0.28, 0.79],
+				"CFrame": [48.299, 0.1, -12.516, -0.9284, 0, 0.3715, 0, 1, 0, -0.3715, 0, -0.9284],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.37, 0.48, 1.37],
+				"CFrame": [36.053, 0.1, -7.023, 0.6579, 0, -0.7531, 0, 1, 0, 0.7531, 0, 0.6579],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.03, 0.36, 1.03],
+				"CFrame": [40.632, 0.1, -13.356, 0.8256, 0, -0.5643, 0, 1, 0, 0.5643, 0, 0.8256],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.93, 0.32, 0.93],
+				"CFrame": [54.484, 0.1, -6.45, -0.9577, 0, 0.2878, 0, 1, 0, -0.2878, 0, -0.9577],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.14, 0.4, 1.14],
+				"CFrame": [34.698, 0.1, 5.147, 0.6131, 0, -0.79, 0, 1, 0, 0.79, 0, 0.6131],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.18, 0.41, 1.18],
+				"CFrame": [51.873, 0.1, 2.085, -0.9971, 0, -0.0767, 0, 1, 0, 0.0767, 0, -0.9971],
+				"Color": [0.768627, 0.462745, 0.27451],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.73, 0.61, 1.73],
+				"CFrame": [47.013, 0.1, 5.454, -0.6924, 0, -0.7215, 0, 1, 0, 0.7215, 0, -0.6924],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.58, 0.55, 1.58],
+				"CFrame": [36.682, 0.1, 4.234, -0.883, 0, 0.4693, 0, 1, 0, -0.4693, 0, -0.883],
+				"Color": [0.768627, 0.462745, 0.27451],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.06, 0.37, 1.06],
+				"CFrame": [-36.084, 0.1, -9.311, -0.2707, 0, -0.9627, 0, 1, 0, 0.9627, 0, -0.2707],
+				"Color": [0.768627, 0.462745, 0.27451],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.71, 0.25, 0.71],
+				"CFrame": [-48.14, 0.1, -3.011, -0.2478, 0, -0.9688, 0, 1, 0, 0.9688, 0, -0.2478],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.36, 0.48, 1.36],
+				"CFrame": [-43.421, 0.1, -3.544, 0.2232, 0, -0.9748, 0, 1, 0, 0.9748, 0, 0.2232],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.09, 0.38, 1.09],
+				"CFrame": [-38.133, 0.1, 6.688, 0.5732, 0, -0.8194, 0, 1, 0, 0.8194, 0, 0.5732],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.76, 0.27, 0.76],
+				"CFrame": [-35.032, 0.1, -3.03, 0.9999, 0, 0.0106, 0, 1, 0, -0.0106, 0, 0.9999],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.33, 0.46, 1.33],
+				"CFrame": [-34.392, 0.1, -3.853, 0.2001, 0, -0.9798, 0, 1, 0, 0.9798, 0, 0.2001],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.19, 0.42, 1.19],
+				"CFrame": [-51.905, 0.1, 1.963, -0.7596, 0, -0.6503, 0, 1, 0, 0.6503, 0, -0.7596],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.07, 0.38, 1.07],
+				"CFrame": [-45.465, 0.1, -1.676, 0.9958, 0, -0.0916, 0, 1, 0, 0.0916, 0, 0.9958],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.9, 0.31, 0.9],
+				"CFrame": [-35.158, 0.1, -6.816, 0.36, 0, -0.933, 0, 1, 0, 0.933, 0, 0.36],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.44, 0.5, 1.44],
+				"CFrame": [-35.569, 0.1, -13.305, 0.2699, 0, -0.9629, 0, 1, 0, 0.9629, 0, 0.2699],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.9, 0.31, 0.9],
+				"CFrame": [-40.606, 0.1, -7.813, 0.9195, 0, -0.393, 0, 1, 0, 0.393, 0, 0.9195],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.36, 0.48, 1.36],
+				"CFrame": [-43.473, 0.1, 1.6, 0.7411, 0, -0.6714, 0, 1, 0, 0.6714, 0, 0.7411],
+				"Color": [0.768627, 0.462745, 0.27451],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.59, 0.56, 1.59],
+				"CFrame": [-34.027, 0.1, -11.514, 0.3132, 0, -0.9497, 0, 1, 0, 0.9497, 0, 0.3132],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.43, 0.5, 1.43],
+				"CFrame": [-33.165, 0.1, -13.308, 0.9964, 0, -0.0845, 0, 1, 0, 0.0845, 0, 0.9964],
+				"Color": [0.768627, 0.462745, 0.27451],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.23, 0.43, 1.23],
+				"CFrame": [-35.501, 0.1, -10.112, 0.4711, 0, 0.8821, 0, 1, 0, -0.8821, 0, 0.4711],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.72, 0.6, 1.72],
+				"CFrame": [-46.066, 0.1, -1.821, -0.3252, 0, 0.9457, 0, 1, 0, -0.9457, 0, -0.3252],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.04, 0.36, 1.04],
+				"CFrame": [-49.932, 0.1, -7.814, -0.2896, 0, -0.9571, 0, 1, 0, 0.9571, 0, -0.2896],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.2, 0.42, 1.2],
+				"CFrame": [-37.337, 0.1, -3.862, -0.9829, 0, -0.1842, 0, 1, 0, 0.1842, 0, -0.9829],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.15, 0.4, 1.15],
+				"CFrame": [-54.71, 0.1, -10.954, -0.2097, 0, 0.9778, 0, 1, 0, -0.9778, 0, -0.2097],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.32, 0.46, 1.32],
+				"CFrame": [-36.828, 0.1, -6.108, -0.9659, 0, 0.259, 0, 1, 0, -0.259, 0, -0.9659],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [0.87, 0.31, 0.87],
+				"CFrame": [-53.51, 0.1, 6.423, -0.7163, 0, -0.6978, 0, 1, 0, 0.6978, 0, -0.7163],
+				"Color": [0.658824, 0.392157, 0.25098],
+				"Material": "Rock"
+			}
+		},
+		{
+			"name": "Minério",
+			"className": "Part",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"Size": [1.36, 0.48, 1.36],
+				"CFrame": [-48.131, 0.1, -12.991, 0.8748, 0, -0.4845, 0, 1, 0, 0.4845, 0, 0.8748],
+				"Color": [0.501961, 0.329412, 0.235294],
+				"Material": "Rock"
 			}
 		}
 	]

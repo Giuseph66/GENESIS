@@ -11,6 +11,8 @@ Combate em terceira pessoa com uma ferramenta de arco elétrico reaproveitada da
 | Ataque principal | 20 de dano, 0,55 s entre ataques, alcance inicial de 8 studs |
 | Ataque secundário | 35 de dano, 4 s entre usos, linha de visão exigida |
 
+Limpar um encontro devolve 40 de vida. Na terceira pessoa, o ponteiro define a mira; na primeira, a câmera.
+
 Escolha alcance e janela de esquiva em teste com mouse e toque. Se um ataque for rejeitado pelo servidor, o cliente reconcilia o efeito e atualiza o indicador de recarga. O ataque principal precisa permitir terminar a primeira expedição com o equipamento inicial.
 
 ## Inimigos e comportamento

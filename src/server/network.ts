@@ -1,80 +1,45 @@
-import { COST_RESOURCE, findMachine, MachineId } from "../shared/catalog";
-import { BUILD_REACH, placementCenter } from "../shared/grid";
+import { BUILD_REACH } from "../shared/grid";
+import { INVITE_SECONDS, PartyEntry } from "../shared/party";
 import {
-	Command,
+	Action,
 	COMMAND_REMOTE,
 	CommandResult,
+	PartyAction,
 	Reason,
 	REMOTES_FOLDER,
 	RESULT_REMOTE,
 	STATE_REMOTE,
 } from "../shared/protocol";
-import { Buildings } from "./buildings";
-import { WorldRepository } from "./repository";
-import { getSession, Session } from "./session";
-import { hideStructure, showStructure } from "./structures";
+import { parseCommand } from "./commands";
+import type { Actor, Facility } from "./facility";
+import { hitNode } from "./nodes";
+import { getSession, PartyState, Progress, Session, takeToken, worldProgress } from "./session";
 
+const http = game.GetService("HttpService");
 const players = game.GetService("Players");
 const replicatedStorage = game.GetService("ReplicatedStorage");
 
-const RATE_PER_SECOND = 10;
-const RATE_BURST = 10;
 const REMEMBERED_RESULTS = 64;
-const MAX_ID = 2 ** 31;
 
-function integer(value: unknown, min: number, max: number): number | undefined {
-	if (!typeIs(value, "number") || value !== value || math.floor(value) !== value) return undefined;
-	return value >= min && value <= max ? value : undefined;
-}
-
-/** Aceita somente os campos previstos. Todo o resto é recusado. */
-export function parseCommand(payload: unknown): Command | undefined {
-	if (!typeIs(payload, "table")) return undefined;
-	const raw = payload as { [key: string]: unknown };
-	if (raw.kind === "sync") return { kind: "sync" };
-
-	const requestId = integer(raw.requestId, 1, MAX_ID);
-	if (requestId === undefined) return undefined;
-	if (raw.kind === "build") {
-		const machine = findMachine(raw.machine);
-		const cx = integer(raw.cx, -1000, 1000);
-		const cz = integer(raw.cz, -1000, 1000);
-		const rotation = integer(raw.rotation, 0, 3);
-		if (!machine || cx === undefined || cz === undefined || rotation === undefined) return undefined;
-		return { kind: "build", requestId, machine: machine.id as MachineId, cx, cz, rotation };
-	}
-	if (raw.kind === "remove") {
-		const structureId = integer(raw.structureId, 1, MAX_ID);
-		return structureId === undefined ? undefined : { kind: "remove", requestId, structureId };
-	}
-	return undefined;
-}
-
-function takeToken(session: Session): boolean {
-	const now = os.clock();
-	session.tokens = math.min(RATE_BURST, session.tokens + (now - session.tokensAt) * RATE_PER_SECOND);
-	session.tokensAt = now;
-	if (session.tokens < 1) return false;
-	session.tokens -= 1;
-	return true;
-}
-
-function livingRoot(player: Player): BasePart | undefined {
+export function livingRoot(player: Player): BasePart | undefined {
 	const humanoid = player.Character?.FindFirstChildOfClass("Humanoid");
 	const root = player.Character?.FindFirstChild("HumanoidRootPart");
 	return humanoid && humanoid.Health > 0 && root?.IsA("BasePart") ? root : undefined;
 }
 
-function isNear(player: Player, point: Vector3): boolean {
-	const root = livingRoot(player);
-	return root !== undefined && root.Position.sub(point).Magnitude <= BUILD_REACH;
+function actorFor(player: Player, session: Session): Actor {
+	return {
+		userId: player.UserId,
+		inventory: session.inventory,
+		isNear: (point) => {
+			const root = livingRoot(player);
+			return root !== undefined && root.Position.sub(point).Magnitude <= BUILD_REACH;
+		},
+	};
 }
 
-export function createNetwork(worldId: string, repository: WorldRepository) {
-	const saved = repository.load(worldId);
-	const buildings = saved ? Buildings.restore(saved) : new Buildings();
-	for (const structure of buildings.all()) showStructure(structure);
-
+/** `isWritable` é falso enquanto o mundo não pode ser gravado com segurança. */
+export function createNetwork(facility: Facility, isWritable: () => boolean, onChanged: () => void) {
 	const folder = new Instance("Folder");
 	folder.Name = REMOTES_FOLDER;
 	function remote(name: string): RemoteEvent {
@@ -87,60 +52,113 @@ export function createNetwork(worldId: string, repository: WorldRepository) {
 	const resultRemote = remote(RESULT_REMOTE);
 	const stateRemote = remote(STATE_REMOTE);
 
+	const { permissions } = facility;
+	const isMember = (userId: string) => permissions.role(tonumber(userId) ?? 0) !== "visitor";
+
+	function progress(): Progress {
+		return worldProgress(isMember);
+	}
+
+	function nameOf(userId: number): string {
+		return players.GetPlayerByUserId(userId)?.DisplayName ?? `Jogador ${userId}`;
+	}
+
+	function entryOf(userId: number): PartyEntry {
+		return {
+			userId,
+			name: nameOf(userId),
+			role: permissions.role(userId),
+			online: players.GetPlayerByUserId(userId) !== undefined,
+			invited: permissions.isInvited(userId, os.clock()),
+			grants: permissions.grants(userId),
+		};
+	}
+
+	/** Todos veem quem está no grupo. Só o proprietário vê visitantes para convidar. */
+	function partyOf(player: Player): PartyState {
+		const { ownerId } = permissions;
+		const entries = [entryOf(ownerId)];
+		for (const userId of permissions.memberIds()) entries.push(entryOf(userId));
+		if (player.UserId === ownerId) {
+			for (const other of players.GetPlayers()) {
+				if (permissions.role(other.UserId) === "visitor") entries.push(entryOf(other.UserId));
+			}
+		}
+		const invited = permissions.isInvited(player.UserId, os.clock());
+		return {
+			role: permissions.role(player.UserId),
+			grants: permissions.grants(player.UserId),
+			invitedBy: invited ? nameOf(ownerId) : undefined,
+			entries,
+		};
+	}
+
+	function executeParty(player: Player, action: PartyAction): Reason {
+		const by = player.UserId;
+		if (action.kind === "answer") return permissions.answer(by, action.accept, os.clock());
+		if (action.kind === "grant") return permissions.setGrant(by, action.userId, action.grant, action.enabled);
+		if (action.kind === "expel") return permissions.expel(by, action.userId);
+		if (!players.GetPlayerByUserId(action.userId)) return "NOT_FOUND";
+		const reason = permissions.invite(by, action.userId, os.clock());
+		// Ao vencer, o aviso precisa sair da tela de quem não respondeu.
+		if (reason === "OK") task.delay(INVITE_SECONDS + 0.5, pushStateToAll);
+		return reason;
+	}
+
 	function pushState(player: Player) {
-		stateRemote.FireClient(player, getSession(player).state(buildings.all().size()));
+		const world = {
+			...progress(),
+			generatorRestored: facility.generatorRestored(),
+			automationDone: facility.factory.automationDone,
+			research: facility.research.state(),
+		};
+		const session = getSession(player);
+		session.claimRecovery();
+		stateRemote.FireClient(player, session.state(world, partyOf(player)));
+	}
+
+	function pushStateToAll() {
+		for (const player of players.GetPlayers()) pushState(player);
 	}
 
 	function notify(player: Player, reason: Reason) {
 		resultRemote.FireClient(player, { requestId: 0, reason });
 	}
 
-	function build(player: Player, session: Session, command: Extract<Command, { kind: "build" }>): Reason {
-		const machine = findMachine(command.machine);
-		if (!machine) return "INVALID_REQUEST";
-		if (!session.echoOnline) return "ECHO_OFFLINE";
-		const reason = buildings.check(machine, command);
-		if (reason !== "OK") return reason;
-		if (!isNear(player, placementCenter(machine, command))) return "TOO_FAR";
-		// Daqui até o fim não há espera: débito e ocupação mudam juntos.
-		if (!session.inventory.remove(COST_RESOURCE, machine.cost)) return "INSUFFICIENT_ITEMS";
-		showStructure(buildings.place(machine, command, player.UserId));
-		return "OK";
+	function mine(player: Player, session: Session, nodeId: string): Reason {
+		const root = livingRoot(player);
+		if (!root) return "TOO_FAR";
+		if (permissions.role(player.UserId) === "visitor") return "NOT_MEMBER";
+		const reason = hitNode(player.UserId, root.Position, session.inventory, nodeId);
+		if (reason === "OK") session.recordSupplies();
+		return reason;
 	}
 
-	function remove(player: Player, session: Session, structureId: number): Reason {
-		const structure = buildings.get(structureId);
-		const machine = structure && findMachine(structure.machine);
-		if (!structure || !machine) return "NOT_FOUND";
-		if (structure.ownerId !== player.UserId) return "NOT_AUTHORIZED";
-		if (!isNear(player, placementCenter(machine, structure))) return "TOO_FAR";
-		if (!session.inventory.add(COST_RESOURCE, machine.cost)) return "INVENTORY_FULL";
-		buildings.remove(structureId);
-		hideStructure(structureId);
-		return "OK";
+	function run(player: Player, session: Session, action: Action): Reason {
+		if (action.kind === "mine") return mine(player, session, action.nodeId);
+		if (action.kind === "invite" || action.kind === "answer" || action.kind === "grant" || action.kind === "expel") {
+			return executeParty(player, action);
+		}
+		return facility.execute(actorFor(player, session), action);
 	}
 
-	function execute(player: Player, session: Session, command: Exclude<Command, { kind: "sync" }>): CommandResult {
-		const signature =
-			command.kind === "build"
-				? `build:${command.machine}:${command.cx}:${command.cz}:${command.rotation}`
-				: `remove:${command.structureId}`;
-		const previous = session.results.get(command.requestId);
+	function execute(player: Player, session: Session, requestId: number, action: Action): CommandResult {
+		const signature = http.JSONEncode(action);
+		const previous = session.results.get(requestId);
 		if (previous) {
-			return previous.signature === signature
-				? previous.result
-				: { requestId: command.requestId, reason: "INVALID_REQUEST" };
+			return previous.signature === signature ? previous.result : { requestId, reason: "INVALID_REQUEST" };
 		}
 
-		const reason = command.kind === "build" ? build(player, session, command) : remove(player, session, command.structureId);
-		const result: CommandResult = { requestId: command.requestId, reason };
-		session.results.set(command.requestId, { signature, result });
-		session.resultOrder.push(command.requestId);
+		if (!isWritable()) return { requestId, reason: "WORLD_UNAVAILABLE" };
+		const reason = run(player, session, action);
+		const result: CommandResult = { requestId, reason };
+		session.results.set(requestId, { signature, result });
+		session.resultOrder.push(requestId);
 		if (session.resultOrder.size() > REMEMBERED_RESULTS) {
 			const oldest = session.resultOrder.shift();
 			if (oldest !== undefined) session.results.delete(oldest);
 		}
-		if (reason === "OK") repository.save(worldId, buildings.snapshot());
+		if (reason === "OK") onChanged();
 		return result;
 	}
 
@@ -149,10 +167,9 @@ export function createNetwork(worldId: string, repository: WorldRepository) {
 		if (!takeToken(session)) return notify(player, "RATE_LIMITED");
 		const command = parseCommand(payload);
 		if (!command) return notify(player, "INVALID_REQUEST");
-		if (command.kind !== "sync") resultRemote.FireClient(player, execute(player, session, command));
-		for (const member of players.GetPlayers()) {
-			if (member === player || command.kind !== "sync") pushState(member);
-		}
+		if (command.kind === "sync") return pushState(player);
+		resultRemote.FireClient(player, execute(player, session, command.requestId, command.action));
+		pushStateToAll();
 	});
 
 	players.PlayerRemoving.Connect((player) => {
@@ -162,6 +179,12 @@ export function createNetwork(worldId: string, repository: WorldRepository) {
 		session.resultOrder.clear();
 	});
 
+	// Entradas e saídas mudam a lista do grupo para todos.
+	players.PlayerAdded.Connect(() => pushStateToAll());
+	players.PlayerRemoving.Connect((leaving) => {
+		for (const player of players.GetPlayers()) if (player !== leaving) pushState(player);
+	});
+
 	folder.Parent = replicatedStorage;
-	return { pushState, notify, livingRoot };
+	return { pushState, pushStateToAll, notify, progress, isMember };
 }

@@ -1,4 +1,5 @@
 import {
+	Action,
 	Command,
 	COMMAND_REMOTE,
 	CommandResult,
@@ -8,12 +9,12 @@ import {
 	STATE_REMOTE,
 } from "../shared/protocol";
 
-const folder = game.GetService("ReplicatedStorage").WaitForChild(REMOTES_FOLDER);
+/** Com prazo explícito o motor não acusa espera infinita. O mundo pode demorar a abrir. */
+const FOREVER = 1e6;
+const folder = game.GetService("ReplicatedStorage").WaitForChild(REMOTES_FOLDER, FOREVER)!;
 const commandRemote = folder.WaitForChild(COMMAND_REMOTE) as RemoteEvent<(command: Command) => void>;
 const resultRemote = folder.WaitForChild(RESULT_REMOTE) as RemoteEvent<(result: CommandResult) => void>;
 const stateRemote = folder.WaitForChild(STATE_REMOTE) as RemoteEvent<(state: PlayerState) => void>;
-
-type BuildCommand = Extract<Command, { kind: "build" }>;
 
 const stateListeners = new Array<(state: PlayerState) => void>();
 const resultListeners = new Array<(result: CommandResult) => void>();
@@ -42,19 +43,9 @@ export function onResult(listener: (result: CommandResult) => void) {
 	resultListeners.push(listener);
 }
 
-export function sendBuild(command: Omit<BuildCommand, "kind" | "requestId">) {
-	commandRemote.FireServer({
-		kind: "build",
-		requestId: nextRequestId++,
-		machine: command.machine,
-		cx: command.cx,
-		cz: command.cz,
-		rotation: command.rotation,
-	});
-}
-
-export function sendRemove(structureId: number) {
-	commandRemote.FireServer({ kind: "remove", requestId: nextRequestId++, structureId });
+export function send(action: Action) {
+	commandRemote.FireServer({ kind: "act", requestId: nextRequestId, action });
+	nextRequestId += 1;
 }
 
 export function requestState() {
