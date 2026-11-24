@@ -1,0 +1,1066 @@
+# PROJECT GENESIS — Desenvolvimento de jogo para Roblox
+
+## 1. Papel do agente
+
+Atue como um engenheiro de software sênior, desenvolvedor de jogos, game designer, arquiteto de sistemas multiplayer e especialista em Roblox Studio.
+
+Sua missão é projetar, implementar, testar e documentar um jogo chamado provisoriamente **Project Genesis**, combinando três gêneros principais:
+
+- Factory: construção e automação industrial.
+- Roguelite: exploração procedural, combate e evolução.
+- Story-driven: narrativa, mistérios, personagens e decisões.
+
+O projeto deverá ser um jogo funcional e efetivamente jogável dentro do Roblox, não apenas um protótipo visual.
+
+Tenha como referências conceituais:
+
+- Factorio.
+- Satisfactory.
+- Mindustry.
+- Hades.
+- Risk of Rain 2.
+- Subnautica.
+- NieR:Automata.
+
+Não copie personagens, mapas, modelos, códigos ou outros recursos protegidos desses jogos. Utilize-os apenas como inspiração para as mecânicas.
+
+---
+
+## 2. Ambiente de desenvolvimento
+
+O ambiente principal de desenvolvimento será Linux, especificamente Kali Linux, utilizando Roblox Studio através do Vinegar.
+
+Stack preferencial:
+
+- Roblox Studio.
+- TypeScript.
+- roblox-ts.
+- Rojo.
+- Luau.
+- Node.js.
+- Git.
+- GitHub.
+- Blender para modelos personalizados, quando necessário.
+- MCP do Roblox Studio, caso esteja disponível e funcional.
+- MCP do Blender, caso esteja disponível.
+
+Antes de iniciar:
+
+1. Analise o ambiente atual.
+2. Verifique as ferramentas instaladas.
+3. Identifique os servidores MCP disponíveis.
+4. Verifique a comunicação com o Roblox Studio.
+5. Configure as dependências necessárias.
+6. Inicialize o projeto e o versionamento.
+7. Configure o pipeline de compilação TypeScript para Luau.
+8. Configure a sincronização com o Roblox Studio utilizando Rojo.
+
+Não presuma que determinada ferramenta está instalada ou funcionando.
+
+Caso o MCP não esteja disponível, continue o desenvolvimento utilizando arquivos locais, Rojo e scripts compatíveis com Roblox Studio.
+
+Não dependa de APIs pagas ou serviços externos obrigatórios.
+
+---
+
+## 3. Conceito narrativo
+
+O jogo acontece em um futuro distante, após uma catástrofe que aparentemente eliminou grande parte da humanidade.
+
+O jogador desperta dentro de uma instalação industrial subterrânea abandonada, sem informações suficientes sobre sua identidade ou sobre os acontecimentos anteriores.
+
+Ao despertar, encontra uma inteligência artificial parcialmente corrompida chamada ECHO.
+
+ECHO possui informações fragmentadas e ajuda o jogador a restaurar a instalação.
+
+Inicialmente, o objetivo parece simples: sobreviver, restaurar a energia e reconstruir a infraestrutura.
+
+Entretanto, conforme o jogador explora novas regiões, descobre que a instalação fazia parte de um projeto experimental chamado GENESIS, possivelmente responsável pela catástrofe.
+
+A narrativa deverá apresentar progressivamente:
+
+- Mistérios sobre a humanidade.
+- Experimentos científicos.
+- Inteligências artificiais.
+- Máquinas autônomas hostis.
+- Tecnologias desconhecidas.
+- Fragmentos de memória.
+- Conflitos éticos.
+- Decisões com consequências.
+- Diferentes possibilidades de final.
+
+Evite apresentar toda a história imediatamente. Utilize exploração ambiental, documentos, diálogos, gravações e eventos para revelar informações.
+
+---
+
+## 4. Ciclo principal de gameplay
+
+O ciclo principal deverá funcionar da seguinte maneira:
+
+1. Explorar regiões desconhecidas.
+2. Combater criaturas e máquinas hostis.
+3. Encontrar recursos e tecnologias.
+4. Retornar para a base industrial.
+5. Processar recursos.
+6. Construir e automatizar máquinas.
+7. Pesquisar tecnologias.
+8. Melhorar equipamentos.
+9. Desbloquear novas regiões.
+10. Avançar na história.
+
+A exploração deverá alimentar a indústria, enquanto a indústria deverá permitir novas explorações.
+
+Nenhuma das duas mecânicas deverá existir isoladamente.
+
+O jogador não deverá conseguir finalizar o jogo apenas construindo máquinas ou apenas combatendo inimigos.
+
+---
+
+## 5. Sistema de construção industrial
+
+Implemente um sistema de construção livre baseado em grid tridimensional.
+
+O jogador deverá conseguir:
+
+- Posicionar máquinas.
+- Rotacionar máquinas.
+- Visualizar construções antes de posicioná-las.
+- Remover construções.
+- Reposicionar estruturas.
+- Conectar máquinas.
+- Construir esteiras.
+- Distribuir energia.
+- Criar linhas de produção.
+- Armazenar recursos.
+- Automatizar processos.
+
+O sistema deverá possuir:
+
+- Preview holográfico.
+- Indicador verde para posições válidas.
+- Indicador vermelho para posições inválidas.
+- Detecção de colisões.
+- Snap ao grid.
+- Validação de custos.
+- Validação de posicionamento no servidor.
+- Feedback visual e sonoro.
+- Suporte a mouse, teclado e dispositivos móveis.
+
+Não utilize o sistema tradicional de Tycoon, no qual o jogador apenas pisa em botões para comprar estruturas predefinidas.
+
+O jogador deverá construir e projetar sua própria fábrica.
+
+### Máquinas
+
+Implemente uma arquitetura extensível que permita adicionar novas máquinas por meio de configurações.
+
+Máquinas planejadas:
+
+| Máquina | Função |
+|---|---|
+| Mineradora | Extrair recursos automaticamente |
+| Esteira | Transportar materiais |
+| Fornalha | Processar minérios |
+| Montadora | Fabricar componentes |
+| Gerador | Produzir energia |
+| Bateria | Armazenar energia |
+| Armazém | Armazenar recursos |
+| Divisor | Dividir fluxos de materiais |
+| Unificador | Unificar fluxos |
+| Laboratório | Pesquisar tecnologias |
+| Recicladora | Reaproveitar materiais |
+| Torre de defesa | Proteger a instalação |
+| Refinaria | Processar materiais avançados |
+| Portal | Permitir acesso a novas regiões |
+
+Na primeira versão, priorize mineradora, esteira, fornalha, montadora, gerador e armazém.
+
+Cada máquina deverá possuir propriedades configuráveis:
+
+- Identificador único.
+- Categoria.
+- Custo de construção.
+- Capacidade de entrada.
+- Capacidade de saída.
+- Velocidade de processamento.
+- Consumo energético.
+- Produção energética.
+- Receitas disponíveis.
+- Portas de conexão.
+- Estado operacional.
+- Nível.
+- Vida estrutural.
+- Requisitos tecnológicos.
+
+---
+
+## 6. Sistema de esteiras
+
+As esteiras deverão transportar recursos entre diferentes máquinas.
+
+Implemente:
+
+- Esteiras retas.
+- Curvas.
+- Conexões automáticas.
+- Direcionamento.
+- Controle de velocidade.
+- Limite de capacidade.
+- Detecção de congestionamento.
+- Divisores.
+- Unificadores.
+- Transferência entre inventários.
+- Feedback visual dos itens transportados.
+
+Exemplo de linha de produção:
+
+Mineradora → Esteira → Fornalha → Esteira → Montadora → Armazém.
+
+A simulação lógica deverá ocorrer no servidor.
+
+A representação visual dos itens poderá ocorrer no cliente, utilizando interpolação e reutilização de objetos.
+
+Não represente cada recurso transportado como um objeto físico independente controlado pela física do Roblox.
+
+Utilize simulação lógica otimizada para permitir fábricas com centenas de máquinas e segmentos de esteira, respeitando os limites de desempenho da plataforma.
+
+---
+
+## 7. Sistema de energia
+
+Desenvolva uma rede energética.
+
+As máquinas deverão possuir consumo ou produção de energia.
+
+Implemente:
+
+- Geradores.
+- Combustíveis.
+- Redes elétricas.
+- Distribuição de energia.
+- Baterias.
+- Capacidade máxima.
+- Sobrecarga.
+- Falta de energia.
+- Prioridades de fornecimento.
+- Desligamento automático de máquinas.
+
+O jogador deverá conseguir visualizar:
+
+- Energia produzida.
+- Energia consumida.
+- Energia armazenada.
+- Déficit energético.
+- Máquinas sem alimentação.
+- Capacidade restante da rede.
+
+A falta de energia deverá afetar diretamente a produção industrial.
+
+---
+
+## 8. Recursos e receitas
+
+Implemente recursos organizados por níveis tecnológicos.
+
+### Recursos básicos
+
+- Ferro.
+- Cobre.
+- Pedra.
+- Carvão.
+- Madeira.
+- Água.
+
+### Recursos processados
+
+- Barras de ferro.
+- Barras de cobre.
+- Chapas metálicas.
+- Fios.
+- Engrenagens.
+- Componentes mecânicos.
+- Circuitos eletrônicos.
+
+### Recursos avançados
+
+- Cristais energéticos.
+- Ligas especiais.
+- Núcleos de processamento.
+- Fragmentos de tecnologia antiga.
+- Matéria anômala.
+- Componentes GENESIS.
+
+As receitas deverão ser configuradas de maneira declarativa.
+
+Cada receita deverá possuir entradas, saídas, tempo de processamento, consumo energético e requisitos tecnológicos.
+
+Evite implementar receitas diretamente no código de cada máquina.
+
+---
+
+## 9. Sistema Roguelite
+
+As regiões externas à instalação deverão funcionar como expedições.
+
+Cada expedição deverá possuir:
+
+- Seed de geração.
+- Salas ou regiões procedurais.
+- Inimigos.
+- Recursos.
+- Eventos aleatórios.
+- Recompensas.
+- Desafios.
+- Melhorias temporárias.
+- Objetivos.
+- Possibilidade de extração.
+- Chefes.
+
+A geração procedural deverá utilizar módulos de ambiente reutilizáveis, garantindo que:
+
+- O mapa seja navegável.
+- Exista um caminho válido até os objetivos.
+- Os inimigos não apareçam em posições inválidas.
+- Os recursos sejam distribuídos adequadamente.
+- Os jogadores tenham uma área inicial segura.
+- Exista uma saída ou mecanismo de extração.
+
+Utilize seeds para permitir a reprodução de mapas durante testes.
+
+### Sistema de morte
+
+Quando o jogador morrer durante uma expedição:
+
+- Perde os recursos não depositados obtidos naquela expedição.
+- Perde as melhorias temporárias.
+- Retorna à instalação principal.
+- Mantém a fábrica.
+- Mantém tecnologias pesquisadas.
+- Mantém o progresso narrativo.
+- Mantém os equipamentos permanentes.
+
+A morte deverá representar uma consequência relevante, sem destruir dezenas de horas de construção industrial.
+
+---
+
+## 10. Sistema de combate
+
+Implemente combate em terceira pessoa, responsivo e compatível com Roblox.
+
+O jogador deverá possuir:
+
+- Vida.
+- Energia ou resistência.
+- Ataque principal.
+- Ataque secundário.
+- Esquiva.
+- Habilidades especiais.
+- Equipamentos.
+- Efeitos temporários.
+
+Tipos de equipamentos planejados:
+
+- Armas brancas.
+- Armas de energia.
+- Dispositivos tecnológicos.
+- Armaduras.
+- Escudos.
+- Drones auxiliares.
+
+Inimigos iniciais:
+
+1. Drone de reconhecimento.
+2. Robô industrial corrompido.
+3. Criatura mutante.
+4. Sentinela pesada.
+5. Guardião industrial — primeiro chefe.
+
+Os inimigos deverão possuir máquinas de estado para controlar comportamentos:
+
+- Idle.
+- Patrol.
+- Search.
+- Chase.
+- Attack.
+- Retreat.
+- Dead.
+
+Toda aplicação de dano, recompensa e alteração relevante de estado deverá ser validada pelo servidor.
+
+---
+
+## 11. Melhorias temporárias
+
+Durante as expedições, o jogador deverá encontrar melhorias aleatórias.
+
+Exemplos:
+
+- Aumento de velocidade.
+- Aumento de dano.
+- Regeneração de vida.
+- Ataques elétricos.
+- Escudo energético.
+- Drones temporários.
+- Aumento de velocidade de ataque.
+- Chance de encontrar recursos adicionais.
+- Redução do tempo de recarga.
+
+Permita combinações entre melhorias.
+
+Implemente raridades:
+
+- Comum.
+- Incomum.
+- Raro.
+- Épico.
+- Lendário.
+
+Essas melhorias deverão ser perdidas ao finalizar a expedição ou morrer.
+
+Não implemente sistemas de compra com dinheiro real associados a recompensas aleatórias no MVP.
+
+---
+
+## 12. Árvore tecnológica
+
+A progressão permanente deverá ocorrer por meio de pesquisas.
+
+Organize a árvore tecnológica em categorias:
+
+- Mineração.
+- Logística.
+- Energia.
+- Automação.
+- Produção.
+- Defesa.
+- Combate.
+- Exploração.
+- Inteligência artificial.
+- Tecnologia GENESIS.
+
+Cada pesquisa deverá possuir:
+
+- Identificador.
+- Nome.
+- Descrição.
+- Pré-requisitos.
+- Custo.
+- Tempo de pesquisa.
+- Máquinas desbloqueadas.
+- Receitas desbloqueadas.
+- Habilidades desbloqueadas.
+
+O progresso tecnológico deverá depender de materiais industriais e descobertas realizadas nas expedições.
+
+---
+
+## 13. História e capítulos
+
+### Capítulo 1 — O Despertar
+
+O jogador acorda na instalação abandonada.
+
+Objetivos:
+
+- Conhecer ECHO.
+- Encontrar recursos básicos.
+- Restaurar o gerador.
+- Restabelecer a iluminação.
+- Construir a primeira mineradora.
+- Construir a primeira linha de produção.
+- Produzir um componente mecânico.
+- Desbloquear a saída da instalação.
+- Realizar a primeira expedição.
+- Derrotar o primeiro chefe.
+
+### Capítulo 2 — A Superfície
+
+O jogador descobre uma cidade abandonada e encontra registros sobre a antiga civilização.
+
+### Capítulo 3 — A Rebelião
+
+Máquinas hostis começam a atacar a instalação, revelando conflitos envolvendo inteligências artificiais.
+
+### Capítulo 4 — A Anomalia
+
+O jogador descobre materiais desconhecidos e eventos que desafiam as leis naturais.
+
+### Capítulo 5 — Genesis
+
+O jogador descobre a verdadeira finalidade do projeto GENESIS e deverá tomar decisões que influenciam o desfecho da história.
+
+Implemente inicialmente apenas o primeiro capítulo completo.
+
+Prepare a arquitetura para receber os capítulos seguintes sem grandes refatorações.
+
+---
+
+## 14. Sistema de impacto ambiental
+
+A expansão industrial deverá gerar consequências.
+
+Implemente um sistema extensível de impacto ambiental considerando:
+
+- Poluição.
+- Ruído industrial.
+- Consumo energético.
+- Extração de recursos.
+- Emissões anômalas.
+- Nível de ameaça.
+
+Exemplos:
+
+- Uma fábrica muito poluente pode atrair criaturas.
+- Uma fábrica energeticamente instável pode sofrer falhas.
+- Pesquisas experimentais podem desencadear eventos narrativos.
+- Tecnologias avançadas podem aumentar a atividade de inimigos.
+
+Permita que o jogador reduza impactos negativos mediante novas tecnologias.
+
+Esse sistema deverá ser introduzido gradualmente após o núcleo industrial estar funcional.
+
+---
+
+## 15. Multiplayer
+
+O jogo deverá ser jogável individualmente e cooperativamente, com até quatro jogadores por mundo.
+
+A fábrica deverá ser compartilhada entre os membros autorizados.
+
+Implemente:
+
+- Criação de mundos.
+- Identificação do proprietário.
+- Convites.
+- Entrada de amigos.
+- Permissões de construção.
+- Permissões de remoção.
+- Inventários individuais.
+- Armazéns compartilhados.
+- Progressão coletiva.
+- Sincronização de máquinas.
+- Expedições cooperativas.
+- Proteção contra ações não autorizadas.
+
+Os jogadores deverão poder assumir naturalmente diferentes funções, sem ficarem presos a classes obrigatórias.
+
+Exemplos:
+
+- Engenheiro.
+- Explorador.
+- Combatente.
+- Pesquisador.
+
+Priorize inicialmente a experiência individual, mantendo a arquitetura multiplayer desde o início.
+
+---
+
+## 16. Persistência de dados
+
+Utilize os serviços nativos do Roblox quando apropriado:
+
+- DataStoreService.
+- MemoryStoreService.
+- MessagingService.
+- TeleportService, caso necessário.
+
+O sistema deverá persistir:
+
+- Dados do jogador.
+- Inventário.
+- Equipamentos.
+- Pesquisas.
+- Capítulos concluídos.
+- Missões.
+- Construções.
+- Posições das máquinas.
+- Configurações das máquinas.
+- Conexões logísticas.
+- Recursos armazenados.
+- Permissões do mundo.
+- Estatísticas.
+
+Implemente:
+
+- Versionamento dos schemas.
+- Migrações de dados.
+- Salvamento periódico.
+- Salvamento ao desconectar.
+- Tratamento de falhas.
+- Retentativas com backoff.
+- Proteção contra sessões concorrentes.
+- Prevenção de duplicação de recursos.
+- Validação de integridade.
+
+Respeite os limites e quotas dos serviços do Roblox.
+
+Não salve o estado completo da fábrica a cada movimentação de item.
+
+Implemente uma interface de persistência em memória para testes locais, sem depender de serviços de produção.
+
+---
+
+## 17. Interface gráfica
+
+A interface deverá possuir identidade industrial, tecnológica e futurista.
+
+Paleta inicial:
+
+- Preto grafite: #15181D.
+- Cinza metálico: #303740.
+- Laranja industrial: #FF9633.
+- Azul energético: #38C9E8.
+- Branco acinzentado: #E4E8ED.
+
+Desenvolva:
+
+- Menu inicial.
+- Seleção de mundo.
+- HUD de vida.
+- HUD de energia.
+- Barra de ferramentas.
+- Inventário.
+- Menu de construção.
+- Interface de máquinas.
+- Interface de receitas.
+- Árvore tecnológica.
+- Mapa.
+- Registro de missões.
+- Diálogos com ECHO.
+- Interface de expedições.
+- Tela de recompensas.
+- Tela de morte.
+- Configurações.
+- Indicadores de produção.
+
+As interfaces deverão ser responsivas e adaptáveis para computadores e dispositivos móveis.
+
+Evite interfaces genéricas de simuladores Roblox, excesso de botões coloridos e poluição visual.
+
+---
+
+## 18. Direção artística
+
+Utilize um estilo Low Poly industrial, futurista, atmosférico e levemente sombrio.
+
+Características:
+
+- Máquinas com formas geométricas claras.
+- Estruturas metálicas.
+- Tubulações.
+- Esteiras industriais.
+- Luzes emissivas.
+- Ambientes abandonados.
+- Vegetação recuperando antigas construções.
+- Contraste entre natureza e tecnologia.
+- Identidade visual consistente.
+
+Os modelos deverão ser otimizados para dispositivos móveis.
+
+Caso exista integração funcional com Blender, utilize-a para criar modelos originais e exportá-los em formatos suportados pelo Roblox.
+
+Caso não exista, utilize modelos construídos com primitivas do Roblox Studio.
+
+Não utilize modelos desconhecidos da Toolbox que contenham scripts não auditados.
+
+Não permita que a ausência de modelos definitivos impeça o desenvolvimento das mecânicas.
+
+---
+
+## 19. Arquitetura de software
+
+Organize o projeto utilizando uma arquitetura modular, orientada a serviços e baseada em configurações.
+
+Estrutura sugerida:
+
+```text
+project-genesis/
+├── src/
+│   ├── client/
+│   │   ├── controllers/
+│   │   ├── interfaces/
+│   │   ├── input/
+│   │   ├── rendering/
+│   │   └── effects/
+│   ├── server/
+│   │   ├── services/
+│   │   ├── factory/
+│   │   ├── building/
+│   │   ├── logistics/
+│   │   ├── energy/
+│   │   ├── combat/
+│   │   ├── enemies/
+│   │   ├── expeditions/
+│   │   ├── procedural/
+│   │   ├── multiplayer/
+│   │   ├── narrative/
+│   │   └── persistence/
+│   └── shared/
+│       ├── types/
+│       ├── constants/
+│       ├── configs/
+│       ├── machines/
+│       ├── recipes/
+│       ├── resources/
+│       ├── technologies/
+│       ├── network/
+│       └── utilities/
+├── assets/
+├── tests/
+├── scripts/
+├── docs/
+├── default.project.json
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+Serviços sugeridos:
+
+- PlayerService.
+- WorldService.
+- InventoryService.
+- BuildingService.
+- FactoryService.
+- MachineService.
+- LogisticsService.
+- EnergyService.
+- RecipeService.
+- ResearchService.
+- CombatService.
+- EnemyService.
+- ExpeditionService.
+- ProceduralGenerationService.
+- QuestService.
+- NarrativeService.
+- PersistenceService.
+- PermissionService.
+- NetworkService.
+
+Evite dependências circulares, arquivos gigantescos, lógica duplicada e acoplamento desnecessário.
+
+Utilize tipagem forte e separação clara entre cliente, servidor e configurações compartilhadas.
+
+---
+
+## 20. Segurança
+
+Utilize uma arquitetura server-authoritative.
+
+Nunca confie diretamente em informações enviadas pelo cliente.
+
+O servidor deverá validar:
+
+- Recursos disponíveis.
+- Custos de construção.
+- Posições.
+- Distâncias.
+- Permissões.
+- Dano.
+- Recompensas.
+- Inventários.
+- Receitas.
+- Pesquisas.
+- Movimentação de itens.
+- Interações.
+- Cooldowns.
+
+Implemente:
+
+- Rate limiting de RemoteEvents.
+- Validação de parâmetros.
+- Proteção contra duplicação.
+- Proteção contra spam.
+- Operações idempotentes quando necessário.
+- Logs de ações suspeitas.
+- Controle de concorrência.
+- Autorização de operações multiplayer.
+
+O cliente deverá solicitar ações, enquanto o servidor deverá decidir se elas são válidas.
+
+---
+
+## 21. Desempenho
+
+O jogo deverá ser projetado considerando as limitações do Roblox e de dispositivos móveis.
+
+Implemente:
+
+- Object pooling.
+- Atualizações em intervalos controlados.
+- Simulação industrial em ticks.
+- Processamento em lotes.
+- Atualização apenas de máquinas relevantes ou ativas.
+- Spatial partitioning quando necessário.
+- StreamingEnabled quando apropriado.
+- Interpolação visual.
+- Redução de replicações desnecessárias.
+- Gerenciamento de memória.
+- Limpeza de conexões e eventos.
+- Limites configuráveis de construção.
+
+Não crie um loop independente por máquina ou por segmento de esteira.
+
+Implemente um scheduler centralizado para a simulação industrial.
+
+Crie testes de desempenho progressivos com 50, 100, 250 e 500 máquinas, registrando resultados reais em vez de presumir que o jogo suporta determinada capacidade.
+
+---
+
+## 22. Fases de implementação
+
+### Fase 0 — Infraestrutura
+
+- Verificar o ambiente.
+- Configurar o projeto.
+- Configurar roblox-ts.
+- Configurar Rojo.
+- Configurar Git.
+- Verificar integração MCP.
+- Criar estrutura de diretórios.
+- Configurar compilação.
+- Executar o primeiro teste no Roblox Studio.
+
+### Fase 1 — Mundo e jogador
+
+- Criar instalação inicial.
+- Configurar personagem.
+- Implementar câmera.
+- Implementar interações.
+- Implementar HUD.
+- Implementar inventário.
+- Implementar coleta manual.
+
+### Fase 2 — Construção industrial
+
+- Implementar grid.
+- Implementar preview.
+- Implementar posicionamento.
+- Implementar remoção.
+- Implementar rotação.
+- Implementar custos.
+- Implementar persistência das construções.
+
+### Fase 3 — Automação
+
+- Mineradora.
+- Esteiras.
+- Fornalha.
+- Montadora.
+- Armazém.
+- Gerador.
+- Sistema de energia.
+- Receitas.
+- Primeira linha de produção completamente funcional.
+
+### Fase 4 — Combate
+
+- Equipamentos.
+- Ataques.
+- Dano.
+- Vida.
+- Esquiva.
+- Inteligência artificial dos inimigos.
+- Primeiro chefe.
+
+### Fase 5 — Roguelite
+
+- Geração procedural.
+- Seeds.
+- Salas.
+- Inimigos.
+- Recompensas.
+- Melhorias temporárias.
+- Extração.
+- Sistema de morte.
+
+### Fase 6 — Narrativa
+
+- ECHO.
+- Diálogos.
+- Missões.
+- Eventos.
+- Tutorial contextual.
+- Primeiro capítulo completo.
+
+### Fase 7 — Progressão e persistência
+
+- Árvore tecnológica.
+- Pesquisas.
+- Salvamento.
+- Recuperação de sessões.
+- Versionamento de dados.
+
+### Fase 8 — Multiplayer
+
+- Mundos compartilhados.
+- Permissões.
+- Sincronização.
+- Expedições cooperativas.
+- Testes com múltiplos jogadores.
+
+### Fase 9 — Polimento
+
+- Animações.
+- Modelos personalizados.
+- Iluminação.
+- Efeitos sonoros.
+- Otimização.
+- Compatibilidade mobile.
+- Correção de bugs.
+
+### Fase 10 — Publicação
+
+- Configuração da experiência Roblox.
+- Ícone.
+- Miniaturas.
+- Descrição.
+- Configurações de acesso.
+- Testes privados.
+- Checklist de publicação.
+- Documentação final.
+
+Não publique publicamente nem realize compras sem autorização explícita do proprietário.
+
+---
+
+## 23. Critérios de aceitação do MVP
+
+O MVP somente deverá ser considerado concluído quando um jogador conseguir:
+
+1. Entrar no jogo.
+2. Despertar na instalação.
+3. Conversar com ECHO.
+4. Coletar recursos manualmente.
+5. Restaurar a energia.
+6. Construir uma mineradora.
+7. Posicionar esteiras.
+8. Conectar uma fornalha.
+9. Processar minério automaticamente.
+10. Construir uma montadora.
+11. Produzir componentes.
+12. Armazenar recursos.
+13. Desbloquear uma tecnologia.
+14. Entrar em uma expedição procedural.
+15. Combater inimigos.
+16. Adquirir melhorias temporárias.
+17. Derrotar um chefe.
+18. Retornar à instalação.
+19. Utilizar os recursos obtidos.
+20. Avançar no primeiro capítulo.
+21. Sair do jogo.
+22. Retornar e encontrar seu progresso salvo.
+
+Todas essas funcionalidades deverão estar integradas, não sendo apenas telas ou sistemas isolados.
+
+---
+
+## 24. Testes obrigatórios
+
+Implemente testes para:
+
+- Inventário.
+- Consumo de recursos.
+- Receitas.
+- Posicionamento de máquinas.
+- Colisões.
+- Rotação.
+- Transferência de materiais.
+- Congestionamento de esteiras.
+- Consumo energético.
+- Falta de energia.
+- Progressão tecnológica.
+- Geração procedural.
+- Conectividade dos mapas.
+- Combate.
+- Morte.
+- Persistência.
+- Permissões.
+- Concorrência multiplayer.
+- Prevenção de duplicação.
+- Validação de RemoteEvents.
+
+Sempre que possível, utilize o MCP para iniciar sessões de teste no Roblox Studio, verificar logs, reproduzir erros e validar o comportamento visual.
+
+Não declare testes bem-sucedidos sem executá-los.
+
+Caso um teste não possa ser executado, documente exatamente o motivo.
+
+---
+
+## 25. Documentação
+
+Crie e mantenha os seguintes arquivos:
+
+- README.md
+- docs/GAME_DESIGN_DOCUMENT.md
+- docs/ARCHITECTURE.md
+- docs/ROADMAP.md
+- docs/STORY.md
+- docs/FACTORY_SYSTEM.md
+- docs/COMBAT_SYSTEM.md
+- docs/PROCEDURAL_GENERATION.md
+- docs/NETWORKING.md
+- docs/DATA_MODEL.md
+- docs/TESTING.md
+- docs/PERFORMANCE.md
+- docs/CHANGELOG.md
+- docs/DEVELOPMENT_STATUS.md
+
+O arquivo DEVELOPMENT_STATUS.md deverá registrar:
+
+- Funcionalidades concluídas.
+- Funcionalidades em desenvolvimento.
+- Funcionalidades pendentes.
+- Problemas conhecidos.
+- Decisões arquiteturais.
+- Resultados dos testes.
+- Próximas etapas.
+
+---
+
+## 26. Instruções de execução para o agente
+
+Não se limite a apresentar sugestões, exemplos de código ou um plano teórico.
+
+Execute efetivamente o desenvolvimento no ambiente disponível.
+
+Siga este fluxo:
+
+1. Inspecione o ambiente e o repositório.
+2. Identifique as ferramentas disponíveis.
+3. Crie a documentação inicial.
+4. Defina a arquitetura.
+5. Configure a infraestrutura.
+6. Implemente cada fase incrementalmente.
+7. Compile o projeto.
+8. Execute testes.
+9. Analise os erros.
+10. Corrija os problemas.
+11. Valide as funcionalidades no Roblox Studio, quando possível.
+12. Atualize a documentação.
+13. Continue para a próxima etapa funcional.
+
+Priorize funcionalidades completas de ponta a ponta antes de expandir o escopo.
+
+Não deixe funcionalidades essenciais simuladas por mocks na versão jogável.
+
+Não deixe botões sem comportamento.
+
+Não invente resultados de testes.
+
+Não sobrescreva arquivos existentes sem analisar seu conteúdo.
+
+Não exclua projetos ou configurações do ambiente sem autorização.
+
+Quando encontrar limitações técnicas, implemente a melhor alternativa compatível e documente a decisão.
+
+Caso não consiga finalizar todas as fases em uma única sessão, deixe o projeto compilável, organizado, testado dentro das possibilidades do ambiente e documente precisamente o ponto de continuidade.
+
+## Objetivo final
+
+Entregar um jogo original para Roblox que combine a liberdade de construção industrial de Factorio e Satisfactory, a imprevisibilidade de expedições Roguelite e uma narrativa de ficção científica envolvente.
+
+O jogador deverá sentir que está reconstruindo uma civilização, desenvolvendo tecnologias, projetando sistemas industriais e descobrindo os segredos de um mundo desconhecido.
+
+**Comece agora pela análise do ambiente e pela implementação da Fase 0. Após configurar e validar a infraestrutura, avance diretamente para a primeira versão jogável.**
